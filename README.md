@@ -7,4 +7,4 @@ This is a course requirements for CS191/192 Software Engineering Courses of the 
 Basista, Angelica\
 Burgos, Gianna Pauline\
 Maderal, Lance Andre\
-Santiago, Martin Rodolfo\
+Santiago, Martin Rodolfo
