@@ -1,4 +1,4 @@
-package com.example.super_planner
+package com.cs192.super_planner
 
 import io.flutter.embedding.android.FlutterActivity
 
