@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1099470336989",
+    "project_id": "super-planner-35685",
+    "storage_bucket": "super-planner-35685.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1099470336989:android:3080122209ae63b1313c34",
+        "android_client_info": {
+          "package_name": "com.cs192.super_planner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1099470336989-kt0mj49sc4otve51amja5i1osin0k47r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZtdSMGQ9CmH0XMwMlkDWqs6OrYabzaGo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1099470336989-kt0mj49sc4otve51amja5i1osin0k47r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
