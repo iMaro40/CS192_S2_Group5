@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'dart:developer' as developer;
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:super_planner/constants.dart';
 import 'package:super_planner/views/home.dart';
@@ -13,6 +14,11 @@ class Login extends StatefulWidget {
 
 class LoginState extends State<Login> {
   final loginFormKey = GlobalKey<FormState>();
+  final auth = FirebaseAuth.instance;
+
+  String error = '';
+  String _email = '';
+  String _password = '';
 
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
@@ -72,6 +78,11 @@ class LoginState extends State<Login> {
                           ),
                         ),                        
                       ),
+                      onChanged: (value) {
+                        setState(() {
+                          _email = value.trim();
+                        });
+                      },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your email.';
@@ -114,6 +125,11 @@ class LoginState extends State<Login> {
                           ),
                         ),                        
                       ),
+                      onChanged: (value) {
+                        setState(() {
+                          _password = value.trim();
+                        });
+                      },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your password.';
@@ -128,18 +144,36 @@ class LoginState extends State<Login> {
                     width: MediaQuery.of(context).size.width,
                     // ignore: deprecated_member_use
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (loginFormKey.currentState!.validate()) { //valid login, do submit
-                          print(emailController.text);
-                          print(passwordController.text);
+                          try {
+                            await auth.signInWithEmailAndPassword(email: _email, password: _password);
+
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Home(),
+                              ),
+                              (route) => false,
+                            );
+                            
+                          } on FirebaseAuthException catch (e) {
+                              setState(() {
+                                error = e.message!;
+                              });                              
+                              print('Error: ' + error);
+                          } catch (e) {
+                            error = e.toString();
+                            print('Error: ' + error);
+                          }
                         } else {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Home(),
-                            ),
-                            (route) => false,
-                          );
+                          // Navigator.pushAndRemoveUntil(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => Home(),
+                          //   ),
+                          //   (route) => false,
+                          // );
                         }
                       },    
                       style: ButtonStyle(
