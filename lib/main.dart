@@ -5,7 +5,9 @@ import './views/home.dart';
 import './views/login.dart';
 
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MaterialApp(
     title: 'Super Planner',
     theme: ThemeData(fontFamily: 'Source Sans Pro'),
