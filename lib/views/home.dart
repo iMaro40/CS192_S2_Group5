@@ -41,10 +41,7 @@ class _HomeState extends State<Home> {
           ),
         )
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30.0),
-        child: Login(),
-      ),
+      // body: Home()
     );
   }
 }
