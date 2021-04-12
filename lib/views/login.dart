@@ -174,7 +174,8 @@ class LoginState extends State<Login> {
                         'Not registered yet?', 
                         style: link_text                      
                       ),
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.33),
+                      //SizedBox(width: MediaQuery.of(context).size.width * 0.33),
+                      Spacer(),
                       GestureDetector(
                         onTap: () {
                           Navigator.push(

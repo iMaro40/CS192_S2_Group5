@@ -20,7 +20,22 @@ class _HomeState extends State<Home> {
             letterSpacing: 2,
           )
         ),
-        centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.exit_to_app,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                builder: (context) => Login()),
+              );              // do something
+            },
+          )
+        ],      
+        centerTitle: false,
       ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.cyan[200],

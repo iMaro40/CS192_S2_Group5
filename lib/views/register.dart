@@ -159,7 +159,7 @@ class RegisterState extends State<Register> {
                       width: MediaQuery.of(context).size.width,
                       // ignore: deprecated_member_use
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () { //FIREBASE IMPLEMENTATION
                           if (loginFormKey.currentState!.validate()) { //valid login, do submit
                             print(emailController.text);
                             print(passwordController.text);
@@ -205,7 +205,6 @@ class RegisterState extends State<Register> {
                           'Already have an account?', 
                           style: link_text
                         ),
-                        //SizedBox(width: MediaQuery.of(context).size.width * 0.22),
                         Spacer(),
                         GestureDetector(
                           onTap: () {
