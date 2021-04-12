@@ -205,7 +205,8 @@ class RegisterState extends State<Register> {
                           'Already have an account?', 
                           style: link_text
                         ),
-                        SizedBox(width: MediaQuery.of(context).size.width * 0.26),
+                        //SizedBox(width: MediaQuery.of(context).size.width * 0.22),
+                        Spacer(),
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
