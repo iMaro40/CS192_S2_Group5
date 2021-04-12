@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import './login.dart';
 
+import 'package:super_planner/constants.dart';
+import 'package:super_planner/views/home.dart';
+import 'package:super_planner/views/login.dart';
+
 class Home extends StatefulWidget {
 
   @override
@@ -11,46 +15,92 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.cyan[200],
-        title: Text(
-          'SUPER PLANNER',
-          style: TextStyle(
-            fontSize: 30,
-            letterSpacing: 2,
-          )
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.exit_to_app,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                builder: (context) => Login()),
-              );              // do something
-            },
-          )
-        ],      
-        centerTitle: false,
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: Row(
+            children: <Widget> [
+              const SizedBox(height: 100.0),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xff40a8c4),
+                      width: 2.0
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    color: Color(0xff40a8c4),
+                  ),
+                  child: Image.asset('assets/logos/logo-nt.png',
+                    scale: 1,
+                    color: Colors.white,
+                  )
+                )
+              ),
+              const SizedBox(width: 20.0),
+              const Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Hi,', 
+                  style: header_text
+                ),
+              ),
+              // add the name of user via backend 
+            ]
+          ),
+        )
       ),
+      /*
+        put code here :DD
+      */  
       bottomNavigationBar: BottomAppBar(
-        color: Colors.cyan[200],
+        color: Color(0xff40a8c4),
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 15),
+          padding: EdgeInsets.symmetric(vertical: 12),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Icon(
-                Icons.home,
-                color: Colors.white,
+              IconButton(
+                onPressed: (){
+                  // redirect to home page
+                },
+                icon: Icon(
+                  Icons.home,
+                  color: Colors.white,
+                ),
+                iconSize: 25.0,
               ),
-              Icon(
-                Icons.help,
-                color: Colors.white,
+              IconButton(
+                onPressed: (){
+                  // redirect to calendar page
+                },
+                icon: Icon(
+                  Icons.calendar_today_outlined,
+                  color: Colors.white,
+                ),
+                iconSize: 25.0,
+              ),
+              IconButton(
+                onPressed: (){
+                  // redirect to tasks page
+                },
+                icon: Icon(
+                  Icons.notifications_none,
+                  color: Colors.white,
+                ),
+                iconSize: 25.0,
+              ),
+              IconButton(
+                onPressed: (){
+                  // redirect to settings page
+                },
+                icon: Icon(
+                  Icons.settings,
+                  color: Colors.white,
+                ),
+                iconSize: 25.0,
               ),
             ],
           ),
