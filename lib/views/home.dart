@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import './login.dart';
-
 import 'package:super_planner/constants.dart';
-import 'package:super_planner/views/home.dart';
-import 'package:super_planner/views/login.dart';
-
+import 'package:super_planner/services/auth.dart';
 class Home extends StatefulWidget {
 
   @override
@@ -12,6 +8,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final AuthService _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,6 +96,16 @@ class _HomeState extends State<Home> {
                 },
                 icon: Icon(
                   Icons.settings,
+                  color: Colors.white,
+                ),
+                iconSize: 25.0,
+              ),
+              IconButton( // Log Out
+                onPressed: () async {
+                  await _auth.logOut();
+                },
+                icon: Icon(
+                  Icons.exit_to_app,
                   color: Colors.white,
                 ),
                 iconSize: 25.0,

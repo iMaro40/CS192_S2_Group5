@@ -1,3 +1,5 @@
+// @dart=2.8
+
 import 'package:flutter/material.dart';
 import 'package:super_planner/constants.dart';
 
