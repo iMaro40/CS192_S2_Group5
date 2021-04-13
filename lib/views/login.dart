@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'dart:developer' as developer;
-
 import 'package:super_planner/constants.dart';
 import 'package:super_planner/views/home.dart';
 import 'package:super_planner/views/register.dart';
+import 'package:super_planner/services/auth.dart';
 class Login extends StatefulWidget {
 
   @override
@@ -12,12 +11,15 @@ class Login extends StatefulWidget {
 }
 
 class LoginState extends State<Login> {
+  final AuthService _auth = AuthService();
+
   final loginFormKey = GlobalKey<FormState>();
 
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
 
   bool _showPassword = false;
+  bool _loading = false;
 
   void _togglePassword() {
     setState(() {
@@ -76,6 +78,12 @@ class LoginState extends State<Login> {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your email.';
                         }
+
+                        bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(emailController.text);
+                        if (!emailValid) {
+                          return 'Please enter a valid email.';
+                        }
+
                         return null;
                       }
                     ),
@@ -123,24 +131,62 @@ class LoginState extends State<Login> {
                     ),
                   ),
                   SizedBox(height: 25),
+                  _loading ? CircularProgressIndicator() :
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.08,
                     width: MediaQuery.of(context).size.width,
                     // ignore: deprecated_member_use
                     child: ElevatedButton(
-                      onPressed: () {
-                        if (loginFormKey.currentState!.validate()) { //valid login, do submit
-                          print(emailController.text);
-                          print(passwordController.text);
-                        } else {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Home(),
-                            ),
-                            (route) => false,
-                          );
-                        }
+                      onPressed: () async {
+                        if (loginFormKey.currentState.validate()) { //valid login, do submit
+                          try {
+                            setState(() { _loading = true; });
+
+                            await _auth.login(emailController.text, passwordController.text);
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Home(),
+                              ),
+                              (route) => false,
+                            );
+
+                            setState(() { _loading = false; });
+                          }
+                          catch(err) {
+                            setState(() { _loading = false; });
+                            String errorMsg = '';
+                            switch(err.code) {
+                              case 'wrong-password': 
+                                errorMsg = 'ERROR: Wrong password!'; 
+                                break;
+
+                              case 'user-not-found': 
+                                errorMsg = 'ERROR: User not found!';
+                                break;
+                              
+                              case 'too-many-requests':
+                                errorMsg = 'ERROR: Too many attempts. Please try again later';
+                                break;
+                                
+                              default:
+                                // errorMsg = err.code;
+                                errorMsg = 'ERROR: Some error occured while trying to log in.';
+                            }
+
+                            final snackBar = SnackBar(
+                              content: Text(errorMsg),
+                              action: SnackBarAction(
+                                label: 'CLOSE',
+                                onPressed: () {
+                         
+                                },
+                              ),
+                            );
+
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          }  
+                        } 
                       },    
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(light_blue),

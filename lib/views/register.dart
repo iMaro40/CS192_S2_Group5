@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'dart:developer' as developer;
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:super_planner/constants.dart';
-import 'package:super_planner/views/home.dart';
 import 'package:super_planner/views/login.dart';
+import 'package:super_planner/services/auth.dart';
 class Register extends StatefulWidget {
 
   @override
@@ -12,13 +11,16 @@ class Register extends StatefulWidget {
 }
 
 class RegisterState extends State<Register> {
-  final loginFormKey = GlobalKey<FormState>();
+  final AuthService _auth = AuthService();
+
+  final registerFormKey = GlobalKey<FormState>();
 
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
   TextEditingController nameController = new TextEditingController();
 
   bool _showPassword = false;
+  bool _loading = false;
 
   void _togglePassword() {
     setState(() {
@@ -50,7 +52,7 @@ class RegisterState extends State<Register> {
               ), 
               SizedBox(height: 30.0), 
               Form(
-                key: loginFormKey,
+                key: registerFormKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -76,7 +78,7 @@ class RegisterState extends State<Register> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your email.';
+                            return 'Please enter your name.';
                           }
                           return null;
                         }
@@ -107,6 +109,12 @@ class RegisterState extends State<Register> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your email.';
                           }
+
+                          bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(emailController.text);
+                          if (!emailValid) {
+                            return 'Please enter a valid email.';
+                          }
+
                           return null;
                         }
                       ),
@@ -149,29 +157,74 @@ class RegisterState extends State<Register> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your password.';
                           }
+
+                          if(value.length < 6) {
+                            return 'Password must be at least 6 characters long';
+                          }
+
                           return null;
                         },
                       ),
                     ),
                     SizedBox(height: 25),
+                    _loading ? CircularProgressIndicator() :
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.08,
                       width: MediaQuery.of(context).size.width,
                       // ignore: deprecated_member_use
                       child: ElevatedButton(
-                        onPressed: () { //FIREBASE IMPLEMENTATION
-                          if (loginFormKey.currentState!.validate()) { //valid login, do submit
-                            print(emailController.text);
-                            print(passwordController.text);
-                          } else {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Home(),
-                              ),
-                              (route) => false,
-                            );
-                          }
+                        onPressed: () async { 
+                          if (registerFormKey.currentState.validate()) { 
+                            try {
+                              setState(() { _loading = true; });
+                              
+                              UserCredential result = await _auth.register(emailController.text, passwordController.text);
+                              await result.user.updateProfile( displayName: nameController.text );
+
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                builder: (context) => Login()),
+                              );
+
+                              setState(() { _loading = false; });
+                            }
+                            catch(err) {
+                              setState(() { _loading = false; });
+                              String errorMsg = '';
+                              String code = err.code ? err.code : err.toString();
+
+                              switch(code) {
+                                case 'email-already-in-use': 
+                                  errorMsg = 'ERROR: Email is already in use!'; 
+                                  break;
+
+                                case 'invalid-email': 
+                                  errorMsg = 'ERROR: Invalid email!';
+                                  break;
+                                
+                                case 'too-many-requests':
+                                  errorMsg = 'ERROR: Too many attempts. Please try again later';
+                                  break;
+
+                                default:
+                                  errorMsg = 'ERROR: Some error occurred while trying to register.';
+                              }
+
+                              final snackBar = SnackBar(
+                                content: Text(errorMsg),
+                                action: SnackBarAction(
+                                  label: 'CLOSE',
+                                  onPressed: () {
+                          
+                                  },
+                                ),
+                              );
+
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            }
+                            
+                          } 
                         },    
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(light_blue),

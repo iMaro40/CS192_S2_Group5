@@ -10,6 +10,32 @@ const header_text = TextStyle(
   color: dark_blue
 );
 
+const section_title_text = TextStyle(
+  color: Colors.black,
+  fontWeight: FontWeight.w700,
+  fontSize: 24
+);
+
+const quote_tab_text = TextStyle(
+  color: Colors.black,
+  fontSize: 18
+);
+
+const time_tabs_text = TextStyle(
+  color: Colors.black,
+  fontSize: 14
+);
+
+const title_tabs_text = TextStyle(
+  color: Colors.black,
+  fontSize: 22
+);
+
+const notes_tabs_text = TextStyle(
+  color: Colors.black,
+  fontSize: 12
+);
+
 const field_title = TextStyle(
   color: Color(0xff235784),
   fontWeight: FontWeight.w600,
