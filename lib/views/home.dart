@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:super_planner/components/display_tabs.dart';
+import 'package:super_planner/components/quote.dart';
 import 'package:super_planner/constants.dart';
 import 'package:super_planner/services/auth.dart';
 
@@ -7,6 +9,7 @@ import 'package:super_planner/components/image_button.dart';
 
 import 'package:super_planner/models/user.dart';
 import 'package:provider/provider.dart';
+
 class Home extends StatefulWidget {
 
   @override
@@ -61,7 +64,7 @@ class _HomeState extends State<Home> {
                         ),
                         SizedBox(width: 5.0),
                         Text( 
-                          'John', 
+                         'John', 
                           style: header_text
                         ),
                         Text( 
@@ -86,24 +89,10 @@ class _HomeState extends State<Home> {
                 ],
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-              Container(
-                padding: const EdgeInsets.all(30.0),
-                decoration: new BoxDecoration(
-                  color: Colors.blue[100],
-                  borderRadius: new BorderRadius.all(
-                    Radius.circular(20.0)
-                  )
-                ),                
-                alignment: Alignment.topLeft,
-                child: Column(
-                  children: [
-                    Text(
-                      '\"All our dreams can come true, if we have the courage to pursue them.\”\n\- Walt Disney', 
-                      style: quote_tab_text 
-                    )
-                  ],
-                )
-              ),              
+              QuoteTab(
+                color: Colors.blue[100], 
+                quote: '\"All our dreams can come true, if we have the courage to pursue them.\”\n\- Walt Disney'
+              ),            
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -118,61 +107,13 @@ class _HomeState extends State<Home> {
                 ],
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-              Container(
-                // constraints: BoxConstraints.expand(
-                //   height: Theme.of(context).textTheme.headline4!.fontSize! * 1.1 + 200.0,
-                // ),
-                padding: const EdgeInsets.all(30.0),
-                decoration: new BoxDecoration(
-                  color: Colors.orange[100],
-                  borderRadius: new BorderRadius.all(
-                    Radius.circular(20.0)
-                  )
-                ),                
-                alignment: Alignment.topLeft,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.schedule,
-                          color: Colors.orange,
-                          size: 20.0,
-                        ),
-                        SizedBox(width: MediaQuery.of(context).size.width * 0.01),
-                        Text( 
-                          '10:30 AM - 12:00PM', 
-                          style: time_tabs_text
-                        ),                      
-                      ],
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text( 
-                          'CS 33 Data Structures', 
-                          style: title_tabs_text
-                        ),
-                        Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: Text('Lecture'),
-                          )
-                        )                                              
-                      ],
-                    ),  
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                    Row(
-                      children: [
-                        Text( 
-                          'Mr Kevin Buno // Zoom', 
-                          style: notes_tabs_text
-                        )                    
-                      ],
-                    )
-                  ],
-                )
+              DisplayTabs(
+                color: Colors.orange[100],
+                icon_color: Colors.orange,
+                time: '10:30 AM - 12:00PM',
+                event: 'CS 33 Data Structures',
+                tags: 'Lecture', 
+                notes: 'Mr Kevin Buno // Zoom'
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               Row(
@@ -187,60 +128,15 @@ class _HomeState extends State<Home> {
                   )
                 ],
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.03),      
-              Container(
-                padding: const EdgeInsets.all(30.0),
-                decoration: new BoxDecoration(
-                  color: Colors.purple[100],
-                  borderRadius: new BorderRadius.all(
-                    Radius.circular(20.0)
-                  )
-                ),                
-                alignment: Alignment.topLeft,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.schedule,
-                          color: Colors.purple,
-                          size: 20.0,
-                        ),
-                        SizedBox(width: MediaQuery.of(context).size.width * 0.01),
-                        Text( 
-                          '6:00 PM - 7:00PM', 
-                          style: time_tabs_text
-                        ),                      
-                      ],
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text( 
-                          'CS 192 Sprint', 
-                          style: title_tabs_text
-                        ),
-                        Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: Text('Study Group'),
-                          )
-                        )                                              
-                      ],
-                    ),  
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                    Row(
-                      children: [
-                        Text( 
-                          'CS 192 Group 2 Teammates // Discord', 
-                          style: notes_tabs_text
-                        )                    
-                      ],
-                    )
-                  ],
-                )
-              ),        
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03), 
+              DisplayTabs(
+                color: Colors.purple[100],
+                icon_color: Colors.purple,
+                time: '6:00 PM - 7:00PM',
+                event: 'CS 192 Sprint',
+                tags: 'Meeting', 
+                notes: 'CS 192 Group 2 Teammates // Discord'
+              ),                   
               /*ADD OTHER ELEMENTS HERE*/
             ],
           )
