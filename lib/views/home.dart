@@ -1,6 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:super_planner/constants.dart';
 import 'package:super_planner/services/auth.dart';
+import 'package:super_planner/models/user.dart';
+import 'package:provider/provider.dart';
 class Home extends StatefulWidget {
 
   @override
@@ -9,9 +12,11 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
-
+ 
   @override
   Widget build(BuildContext context) {
+    String _displayName = Provider.of<CustomUser>(context).getName();
+    print('DISPLAY NAME: $_displayName');
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
@@ -41,7 +46,7 @@ class _HomeState extends State<Home> {
               const Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  'Hi,', 
+                  'Hi', 
                   style: header_text
                 ),
               ),

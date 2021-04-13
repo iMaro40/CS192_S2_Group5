@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:super_planner/constants.dart';
 import 'package:super_planner/views/login.dart';
 import 'package:super_planner/services/auth.dart';
@@ -177,7 +178,9 @@ class RegisterState extends State<Register> {
                             try {
                               setState(() { _loading = true; });
                               
-                              await _auth.register(emailController.text, passwordController.text);
+                              UserCredential result = await _auth.register(emailController.text, passwordController.text);
+                              await result.user.updateProfile( displayName: nameController.text );
+
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
@@ -189,7 +192,9 @@ class RegisterState extends State<Register> {
                             catch(err) {
                               setState(() { _loading = false; });
                               String errorMsg = '';
-                              switch(err.code) {
+                              String code = err.code ? err.code : err.toString();
+
+                              switch(code) {
                                 case 'email-already-in-use': 
                                   errorMsg = 'ERROR: Email is already in use!'; 
                                   break;
