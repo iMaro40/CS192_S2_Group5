@@ -9,6 +9,8 @@ import 'package:super_planner/components/small_button.dart';
 
 import 'package:super_planner/models/user.dart';
 import 'package:provider/provider.dart';
+import 'package:super_planner/views/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Home extends StatefulWidget {
 
@@ -21,8 +23,13 @@ class _HomeState extends State<Home> {
  
   @override
   Widget build(BuildContext context) {
-    // String _displayName = Provider.of<CustomUser>(context).getName();
-    // print('DISPLAY NAME: $_displayName');
+    var user = FirebaseAuth.instance.currentUser;
+    String _displayName = 'User';
+
+    if (user != null) {
+      _displayName = user.displayName;
+      print('DISPLAY NAME: $_displayName');
+    }
     
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -64,7 +71,7 @@ class _HomeState extends State<Home> {
                         ),
                         SizedBox(width: 5.0),
                         Text( 
-                         'John', 
+                         _displayName == null ? 'User' : _displayName, 
                           style: header_text
                         ),
                         Text( 
@@ -195,6 +202,11 @@ class _HomeState extends State<Home> {
               IconButton( // Log Out
                 onPressed: () async {
                   await _auth.logOut();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                    builder: (context) => Login()),
+                  );
                 },
                 icon: Icon(
                   Icons.exit_to_app,
