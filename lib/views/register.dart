@@ -192,7 +192,7 @@ class RegisterState extends State<Register> {
                             catch(err) {
                               setState(() { _loading = false; });
                               String errorMsg = '';
-                              String code = err.code ? err.code : err.toString();
+                              String code = err.code != null ? err.code : err.toString();
 
                               switch(code) {
                                 case 'email-already-in-use': 
