@@ -57,13 +57,19 @@ class DisplayTabs extends StatelessWidget {
               Text( 
                 event, 
                 style: title_tabs_text
-              ),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(3.0),
-                  child: Text(tags),
-                )
-              )                                              
+              ),    
+              Container(
+                // width: 0,
+                height: 30,
+                padding: const EdgeInsets.only(top:5, left:10.0, right: 10.0),
+                decoration: new BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: new BorderRadius.all(
+                    Radius.circular(20.0)
+                  )
+                ),
+                child: Text(tags)  
+              ),                                         
             ],
           ),  
           SizedBox(height: MediaQuery.of(context).size.height * 0.01),
