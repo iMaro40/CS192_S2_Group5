@@ -1,11 +1,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:super_planner/components/display_tabs.dart';
-import 'package:super_planner/components/quote.dart';
+import 'package:super_planner/components/quote_tabs.dart';
 import 'package:super_planner/constants.dart';
 import 'package:super_planner/services/auth.dart';
 
-import 'package:super_planner/components/image_button.dart';
+import 'package:super_planner/components/small_button.dart';
 
 import 'package:super_planner/models/user.dart';
 import 'package:provider/provider.dart';
@@ -21,8 +21,8 @@ class _HomeState extends State<Home> {
  
   @override
   Widget build(BuildContext context) {
-    String _displayName = Provider.of<CustomUser>(context).getName();
-    print('DISPLAY NAME: $_displayName');
+    // String _displayName = Provider.of<CustomUser>(context).getName();
+    // print('DISPLAY NAME: $_displayName');
     
     return Scaffold(
       resizeToAvoidBottomInset: true,
