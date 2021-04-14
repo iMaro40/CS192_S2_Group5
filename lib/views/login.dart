@@ -154,6 +154,7 @@ class LoginState extends State<Login> {
                             setState(() { _loading = false; });
                           }
                           catch(err) {
+                            setState(() { _loading = false; });
                             String errorMsg = '';
                             switch(err.code) {
                               case 'wrong-password': 
