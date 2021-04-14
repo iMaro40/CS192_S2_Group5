@@ -10,6 +10,7 @@ import 'package:super_planner/components/small_button.dart';
 import 'package:super_planner/models/user.dart';
 import 'package:provider/provider.dart';
 import 'package:super_planner/views/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Home extends StatefulWidget {
 
@@ -22,11 +23,11 @@ class _HomeState extends State<Home> {
  
   @override
   Widget build(BuildContext context) {
-    var user = Provider.of<CustomUser>(context);
+    var user = FirebaseAuth.instance.currentUser;
     String _displayName = 'User';
 
     if (user != null) {
-      _displayName = user.getName();
+      _displayName = user.displayName;
       print('DISPLAY NAME: $_displayName');
     }
     
