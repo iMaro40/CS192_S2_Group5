@@ -4,14 +4,12 @@ import 'package:super_planner/components/display_tabs.dart';
 import 'package:super_planner/components/quote_tabs.dart';
 import 'package:super_planner/constants.dart';
 import 'package:super_planner/services/auth.dart';
-
 import 'package:super_planner/components/small_button.dart';
-
 import 'package:super_planner/models/user.dart';
 import 'package:provider/provider.dart';
 import 'package:super_planner/views/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:super_planner/services/db.dart';
 class Home extends StatefulWidget {
 
   @override
@@ -23,6 +21,8 @@ class _HomeState extends State<Home> {
  
   @override
   Widget build(BuildContext context) {
+    final DBService db = DBService();
+    
     var user = FirebaseAuth.instance.currentUser;
     String _displayName = 'User';
 
@@ -31,6 +31,8 @@ class _HomeState extends State<Home> {
       print('DISPLAY NAME: $_displayName');
     }
     
+
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
@@ -170,8 +172,10 @@ class _HomeState extends State<Home> {
                 iconSize: 25.0,
               ),
               IconButton(
-                onPressed: (){
+                onPressed: () async {
                   // redirect to calendar page
+                  var task = await db.createTask('FIRST CREATED TASK', 'CONGRATULATIONS IT WORKS');
+                  print(task);
                 },
                 icon: Icon(
                   Icons.calendar_today_outlined,
