@@ -207,8 +207,6 @@ class _HomeState extends State<Home> {
               IconButton(
                 onPressed: () async {
                   // redirect to calendar page
-                  var task = await db.createTask('FIRST CREATED TASK', 'CONGRATULATIONS IT WORKS');
-                  print(task);
                 },
                 icon: Icon(
                   Icons.calendar_today_outlined,

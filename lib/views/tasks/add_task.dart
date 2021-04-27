@@ -19,6 +19,7 @@ class _AddTask extends State<AddTask> {
 
   DateTime selectedDate = DateTime.now();
   String _reminder = "1 day before";
+  DateTime date;
 
     _selectDate(BuildContext context) async {
       final DateTime picked = await showDatePicker(
@@ -33,6 +34,7 @@ class _AddTask extends State<AddTask> {
               "${picked.toLocal().day}/${picked.toLocal().month}/${picked.toLocal().year}";
           _dateController.text = date;
         });
+        date = picked;
     }
 
   Future<String> createAlertDialog(BuildContext context){
@@ -267,7 +269,7 @@ class _AddTask extends State<AddTask> {
                     width: 50,
                     image: 'assets/icons/save_icon.png',
                     press: () async {
-                      var task = await db.createTask(_tasktitleController.text, _notesController.text);
+                      var task = await db.createTask(_tasktitleController.text, _notesController.text, date);
                       print(task);
                     },
                   ),  

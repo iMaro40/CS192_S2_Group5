@@ -18,12 +18,13 @@ class DBService {
     return parsedTasks; 
   }
 
-  Future createTask(String title, String description) async {
+  Future createTask(String title, String description, DateTime date) async {
 
     return taskCollection.add({
       'email': user.email,
       'title': title,
       'description': description,
+      'date': date,
     });
   }
 
