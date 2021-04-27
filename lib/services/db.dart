@@ -42,7 +42,6 @@ class DBService {
     return parsedEvents; 
   }
 
-  // To do: Add category and date fields
   Future createEvent(String title, String notes, TimeOfDay startTime, TimeOfDay endTime, DateTime date, List<String> categories, var reminder) async {
    
     DateTime startTimestamp = new DateTime(date.year, date.month, date.day, startTime.hour, startTime.minute);
