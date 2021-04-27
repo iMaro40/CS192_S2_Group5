@@ -68,6 +68,30 @@ class _AddEvent extends State<AddEvent> {
       date = picked;
     }
 
+  Future<String> createAlertDialog(BuildContext context){
+
+    TextEditingController customController = TextEditingController();
+
+    return showDialog(context: context, builder: (context) {
+        return AlertDialog(
+          title: Text("Enter Category"),
+          content: TextField(
+            controller: customController,
+          ),
+          actions: <Widget>[
+            MaterialButton(
+              elevation: 5.0,
+              child: Text("Submit"),
+              onPressed: () {
+                Navigator.of(context).pop(customController.text.toString());
+              },
+            )
+          ]
+        );
+      }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final DBService db = DBService();
@@ -227,15 +251,56 @@ class _AddEvent extends State<AddEvent> {
                     ),
                   ),       
                   SizedBox(height: 20.0), 
-                  Text(
-                    'EVENT CATEGORY',
-                    style: TextStyle(
-                      color: dark_blue, 
-                      fontSize: 16, 
-                      fontWeight: FontWeight.bold 
-                    ),
+                  Row (
+                    children: [
+                      Text(
+                        'EVENT CATEGORY',
+                        style: TextStyle(
+                          color: dark_blue, 
+                          fontSize: 16, 
+                          fontWeight: FontWeight.bold 
+                        ),
+                      ),
+                      Spacer(),
+                      IconButton(
+                        onPressed: (){
+                          createAlertDialog(context).then((onValue) {
+                            categories.add(onValue);
+                          });
+                        },
+                        splashRadius: 15.0,
+                        icon: Icon(
+                          Icons.add,
+                          color: Color(0xff235784),
+                        ),
+                        iconSize: 20.0,
+                        
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 20.0), 
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                    // decoration: BoxDecoration(
+                    //   border: Border.all(color: Colors.black26),
+                    //   borderRadius: BorderRadius.circular(14),
+                    // ),
+                    child: categories.length == 0
+                        ? SizedBox(height: 0.0)
+                        : Wrap(
+                            runSpacing: 6,
+                            spacing: 6,
+                            children: List.from(categories.map((e) => chipBuilder(
+                                  onTap: () {
+                                    setState(() {
+                                      categories.remove(e);
+                                    });
+                                  },
+                                  title: e,
+                                ))),
+                          ),
+                  ),
+                  SizedBox(height: 10.0), 
                   Text(
                     'NOTES',
                     style: TextStyle(
@@ -290,4 +355,37 @@ class _AddEvent extends State<AddEvent> {
       ),
     );
   }
+}
+
+//category list
+List<String> categories = [];
+
+// chips helper
+Widget chipBuilder({String title, Function onTap}) {
+  return Container(
+    padding: const EdgeInsets.fromLTRB(10, 10, 12, 10),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(20),
+      color: Colors.orange[100],
+    ),
+    child: Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        Text(
+          title ?? "data",
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+        SizedBox(width: 6),
+        GestureDetector(
+          onTap: onTap,
+          child: Icon(
+            Icons.clear,
+            size: 20,
+          ),
+        ),
+      ],
+    ),
+  );
 }
