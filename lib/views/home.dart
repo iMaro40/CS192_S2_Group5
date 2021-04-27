@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:super_planner/components/display_tabs.dart';
+import 'package:super_planner/components/display_task.dart';
 import 'package:super_planner/components/quote_tabs.dart';
 import 'package:super_planner/constants.dart';
 import 'package:super_planner/services/auth.dart';
@@ -144,7 +145,23 @@ class _HomeState extends State<Home> {
                 tags: 'Meeting', 
                 notes: 'CS 192 Group 2 Teammates // Discord'
               ),                   
-              /*ADD OTHER ELEMENTS HERE*/
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text( 
+                    'My Tasks', 
+                    style: section_title_text
+                  ),
+                  SmallButton(
+                    image: 'assets/images/add_btn.png'
+                  )
+                ],
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03), 
+              DisplayTask(
+                taskName: 'Enroll classes'
+              )
             ],
           )
         ), 
