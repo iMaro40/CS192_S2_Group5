@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 const dark_blue = Color(0xff235784);
 const light_blue = Color(0xff40A8C4);
 const dark_grey = Color(0xFF83859D);
+const faded_light_blue = Color(0xFFE0FBFC);
 
 const header_text = TextStyle(
   fontSize: 36, 

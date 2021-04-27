@@ -6,11 +6,15 @@ import 'package:super_planner/components/quote_tabs.dart';
 import 'package:super_planner/constants.dart';
 import 'package:super_planner/services/auth.dart';
 import 'package:super_planner/components/small_button.dart';
+
 import 'package:super_planner/models/user.dart';
 import 'package:provider/provider.dart';
+import 'package:super_planner/views/calendar/add_event.dart';
+
 import 'package:super_planner/views/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:super_planner/services/db.dart';
+import 'package:super_planner/views/tasks/add_task.dart';
 class Home extends StatefulWidget {
 
   @override
@@ -32,8 +36,6 @@ class _HomeState extends State<Home> {
       print('DISPLAY NAME: $_displayName');
     }
     
-
-
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
@@ -94,6 +96,8 @@ class _HomeState extends State<Home> {
                     style: section_title_text
                   ),
                   SmallButton(
+                    height: 35, 
+                    width: 35,
                     image: 'assets/images/edit_btn.png'
                   )
                 ],
@@ -112,7 +116,12 @@ class _HomeState extends State<Home> {
                     style: section_title_text
                   ),
                   SmallButton(
-                    image: 'assets/images/add_btn.png'
+                    height: 35, 
+                    width: 35,
+                    image: 'assets/images/add_btn.png', 
+                    press:  () => Navigator.push(
+                      context,MaterialPageRoute(builder: (context) => AddEvent()),
+                    )
                   )
                 ],
               ),
@@ -134,7 +143,12 @@ class _HomeState extends State<Home> {
                     style: section_title_text
                   ),
                   SmallButton(
-                    image: 'assets/images/add_btn.png'
+                    height: 35, 
+                    width: 35,
+                    image: 'assets/images/add_btn.png', 
+                    press:  () => Navigator.push(
+                      context,MaterialPageRoute(builder: (context) => AddEvent()),
+                    )
                   )
                 ],
               ),
@@ -156,7 +170,12 @@ class _HomeState extends State<Home> {
                     style: section_title_text
                   ),
                   SmallButton(
-                    image: 'assets/images/add_btn.png'
+                    height: 35, 
+                    width: 35,
+                    image: 'assets/images/add_btn.png',
+                    press:  () => Navigator.push(
+                      context,MaterialPageRoute(builder: (context) => AddTask()),
+                    )
                   )
                 ],
               ),
@@ -168,9 +187,6 @@ class _HomeState extends State<Home> {
           )
         ), 
       ),
-      /*
-        put code here :DD
-      */  
       bottomNavigationBar: BottomAppBar(
         color: Color(0xff40a8c4),
         child: Container(
@@ -239,7 +255,6 @@ class _HomeState extends State<Home> {
           ),
         )
       ),
-      // body: Home()
     );
   }
 }
