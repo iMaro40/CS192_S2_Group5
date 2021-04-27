@@ -16,7 +16,7 @@ class DBService {
     return parsedTasks; 
   }
 
-  Future createTask(String title, String description, DateTime startDate, DateTime dueDate, var reminder) async {
+  Future createTask(String title, String description, DateTime startDate, DateTime dueDate, List<String> categories, var reminder) async {
 
     return taskCollection.add({
       'email': user.email,
@@ -24,6 +24,7 @@ class DBService {
       'description': description,
       'startDate': startDate,
       'dueDate': dueDate,
+      'categories': categories,
       'reminder': reminder,
     });
   }

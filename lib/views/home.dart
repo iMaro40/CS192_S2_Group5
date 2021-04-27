@@ -25,18 +25,6 @@ class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   final DBService db = DBService();
 
-  var _tasks;
-
-  @override
-  void initState() {
-    super.initState();
-    db.getTasks().then( (data) {
-      _tasks = data;
-      print("NICE");
-      print(_tasks);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     
@@ -192,17 +180,30 @@ class _HomeState extends State<Home> {
                 ],
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.03), 
-              // ListView.builder(
-              //   itemCount: _tasks != null ? _tasks.length : 0,
-              //   itemBuilder: (context, index) {
-              //     return DisplayTask(
-              //       taskName: _tasks[index].title,
-              //     );
-              //   },
-              // ),
-              DisplayTask(
-                taskName: 'Enroll classes'
-              )
+              FutureBuilder(
+                future: db.getTasks(),
+                builder: (context, snapshot) {
+                  if(snapshot.hasData) {
+                    var tasks = snapshot.data;
+              
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: tasks != null ? tasks.length : 0,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            DisplayTask(
+                              taskName: tasks[index]['title'],
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                  
+                  return Container();
+                },
+              ),
             ],
           )
         ), 

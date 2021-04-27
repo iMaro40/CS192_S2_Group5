@@ -17,6 +17,7 @@ class _AddTask extends State<AddTask> {
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
+  List<String> categories = [];
 
   final addTaskFormKey = GlobalKey<FormState>();
 
@@ -45,7 +46,7 @@ class _AddTask extends State<AddTask> {
   Future<String> createAlertDialog(BuildContext context){
 
     TextEditingController customController = TextEditingController();
-
+  
     return showDialog(context: context, builder: (context) {
         return AlertDialog(
           title: Text("Enter Category"),
@@ -287,7 +288,7 @@ class _AddTask extends State<AddTask> {
 
                             setState(() { _loading = true; });
 
-                            await db.createTask(title, description, startDate, dueDate, reminder);
+                            await db.createTask(title, description, startDate, dueDate, categories, reminder);
 
                             setState(() { _loading = false; });
 
@@ -325,9 +326,6 @@ class _AddTask extends State<AddTask> {
     );
   }
 }
-
-//category list
-List<String> categories = [];
 
 // chips helper
 Widget chipBuilder({String title, Function onTap}) {
