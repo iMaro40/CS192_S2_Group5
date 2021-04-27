@@ -136,7 +136,7 @@ class _AddTask extends State<AddTask> {
                   Container(
                     child: DropdownButton(
                       value: _reminder,
-                      style: const TextStyle(fontSize: 1, color: Colors.black),
+                      style: const TextStyle(fontSize: 18, color: dark_grey),
                       underline: Container(
                         height: 1,
                         color: Colors.grey[500],

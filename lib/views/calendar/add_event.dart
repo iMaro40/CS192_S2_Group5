@@ -15,13 +15,14 @@ class _AddEvent extends State<AddEvent> {
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
-  final TextEditingController _timeController = TextEditingController();
+  final TextEditingController _starttimeController = TextEditingController();
+  final TextEditingController _endtimeController = TextEditingController();
 
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
   String _reminder = "1 day before";
 
-    _selectTime(BuildContext context) async {
+    _selectstartTime(BuildContext context) async {
       final TimeOfDay picked = await showTimePicker(
           context: context,
           initialTime: selectedTime);
@@ -30,7 +31,20 @@ class _AddEvent extends State<AddEvent> {
           selectedTime = picked;
           var time =
               "${picked.hour}:${picked.minute}";
-          _timeController.text = time;
+          _starttimeController.text = time;
+        });
+    }
+
+    _selectendTime(BuildContext context) async {
+      final TimeOfDay picked = await showTimePicker(
+          context: context,
+          initialTime: selectedTime);
+      if (picked != null && picked != selectedTime)
+        setState(() {
+          selectedTime = picked;
+          var time =
+              "${picked.hour}:${picked.minute}";
+          _endtimeController.text = time;
         });
     }
 
@@ -141,23 +155,23 @@ class _AddEvent extends State<AddEvent> {
                   ), 
                   SizedBox(height: 10.0), 
                   GestureDetector(
-                    onTap: () => _selectTime(context),
+                    onTap: () => _selectstartTime(context),
                     child: AbsorbPointer(
                       child: TextFormField(
-                        controller: _timeController,
+                        controller: _starttimeController,
                         style: TextStyle(
                           color: Colors.black, 
                           fontSize: 18
                         ),
                         decoration: InputDecoration(
-                          labelText: "TIME",
+                          labelText: "START TIME",
                           labelStyle: TextStyle(
                             color: dark_blue, 
                             fontWeight: FontWeight.bold, 
                             fontSize: 22
                           ),
                           floatingLabelBehavior: FloatingLabelBehavior.always,
-                          hintText: "Pick a time...",
+                          hintText: "Pick a start time...",
                           hintStyle: TextStyle(height: 2, fontSize: 18),
                           suffixIcon: Icon(
                             Icons.schedule,
@@ -172,7 +186,41 @@ class _AddEvent extends State<AddEvent> {
                         },
                       ),
                     ),
-                  ),     
+                  ), 
+                  SizedBox(height: 10.0), 
+                  GestureDetector(
+                    onTap: () => _selectendTime(context),
+                    child: AbsorbPointer(
+                      child: TextFormField(
+                        controller: _endtimeController,
+                        style: TextStyle(
+                          color: Colors.black, 
+                          fontSize: 18
+                        ),
+                        decoration: InputDecoration(
+                          labelText: "END TIME",
+                          labelStyle: TextStyle(
+                            color: dark_blue, 
+                            fontWeight: FontWeight.bold, 
+                            fontSize: 22
+                          ),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          hintText: "Pick an end time...",
+                          hintStyle: TextStyle(height: 2, fontSize: 18),
+                          suffixIcon: Icon(
+                            Icons.schedule,
+                            color: dark_blue,
+                            size: 28,
+                          ),                                                                           
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty)
+                            return "Please enter a date for your task";
+                          return null;
+                        },
+                      ),
+                    ),
+                  ),       
                   SizedBox(height: 20.0), 
                   Text(
                     'EVENT CATEGORY',
