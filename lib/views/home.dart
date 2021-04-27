@@ -13,8 +13,8 @@ import 'package:super_planner/views/calendar/add_event.dart';
 
 import 'package:super_planner/views/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:super_planner/services/db.dart';
 import 'package:super_planner/views/tasks/add_task.dart';
+import 'package:super_planner/services/db.dart';
 class Home extends StatefulWidget {
 
   @override
@@ -23,10 +23,10 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
- 
+  final DBService db = DBService();
+
   @override
   Widget build(BuildContext context) {
-    final DBService db = DBService();
     
     var user = FirebaseAuth.instance.currentUser;
     String _displayName = 'User';
@@ -174,15 +174,36 @@ class _HomeState extends State<Home> {
                     width: 35,
                     image: 'assets/images/add_btn.png',
                     press:  () => Navigator.push(
-                      context,MaterialPageRoute(builder: (context) => AddTask()),
+                      context, MaterialPageRoute(builder: (context) => AddTask()),
                     )
                   )
                 ],
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.03), 
-              DisplayTask(
-                taskName: 'Enroll classes'
-              )
+              FutureBuilder(
+                future: db.getTasks(),
+                builder: (context, snapshot) {
+                  if(snapshot.hasData) {
+                    var tasks = snapshot.data;
+              
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: tasks != null ? tasks.length : 0,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            DisplayTask(
+                              taskName: tasks[index]['title'],
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                  
+                  return Container();
+                },
+              ),
             ],
           )
         ), 

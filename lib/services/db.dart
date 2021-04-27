@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 class DBService {
   final CollectionReference taskCollection = FirebaseFirestore.instance.collection('tasks');
-  final CollectionReference eventCollection = FirebaseFirestore.instance.collection('events');
   var user = FirebaseAuth.instance.currentUser;
 
   Future getTasks() async {
@@ -18,13 +17,16 @@ class DBService {
     return parsedTasks; 
   }
 
-  Future createTask(String title, String description, DateTime date) async {
+  Future createTask(String title, String description, DateTime startDate, DateTime dueDate, List<String> categories, var reminder) async {
 
     return taskCollection.add({
       'email': user.email,
       'title': title,
       'description': description,
-      'date': date,
+      'startDate': startDate,
+      'dueDate': dueDate,
+      'categories': categories,
+      'reminder': reminder,
     });
   }
 
@@ -51,6 +53,12 @@ class DBService {
       'notes': notes,
       'startTime': startTimestamp, // Timestamp data type
       'endTime': endTimestamp,     // Timestamp data type
+
+      'startDate': startDate,
+      'dueDate': dueDate,
+      'categories': categories,
+      'reminder': reminder,
+
     });
   }
 }
