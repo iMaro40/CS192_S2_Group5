@@ -16,12 +16,15 @@ class DBService {
     return parsedTasks; 
   }
 
-  Future createTask(String title, String description) async {
+  Future createTask(String title, String description, DateTime startDate, DateTime dueDate, var reminder) async {
 
     return taskCollection.add({
       'email': user.email,
       'title': title,
       'description': description,
+      'startDate': startDate,
+      'dueDate': dueDate,
+      'reminder': reminder,
     });
   }
 }

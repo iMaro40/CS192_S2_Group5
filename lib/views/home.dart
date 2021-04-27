@@ -13,8 +13,8 @@ import 'package:super_planner/views/calendar/add_event.dart';
 
 import 'package:super_planner/views/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:super_planner/services/db.dart';
 import 'package:super_planner/views/tasks/add_task.dart';
+import 'package:super_planner/services/db.dart';
 class Home extends StatefulWidget {
 
   @override
@@ -23,10 +23,22 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
- 
+  final DBService db = DBService();
+
+  var _tasks;
+
+  @override
+  void initState() {
+    super.initState();
+    db.getTasks().then( (data) {
+      _tasks = data;
+      print("NICE");
+      print(_tasks);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final DBService db = DBService();
     
     var user = FirebaseAuth.instance.currentUser;
     String _displayName = 'User';
@@ -174,12 +186,20 @@ class _HomeState extends State<Home> {
                     width: 35,
                     image: 'assets/images/add_btn.png',
                     press:  () => Navigator.push(
-                      context,MaterialPageRoute(builder: (context) => AddTask()),
+                      context, MaterialPageRoute(builder: (context) => AddTask()),
                     )
                   )
                 ],
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.03), 
+              // ListView.builder(
+              //   itemCount: _tasks != null ? _tasks.length : 0,
+              //   itemBuilder: (context, index) {
+              //     return DisplayTask(
+              //       taskName: _tasks[index].title,
+              //     );
+              //   },
+              // ),
               DisplayTask(
                 taskName: 'Enroll classes'
               )
@@ -207,8 +227,6 @@ class _HomeState extends State<Home> {
               IconButton(
                 onPressed: () async {
                   // redirect to calendar page
-                  var task = await db.createTask('FIRST CREATED TASK', 'CONGRATULATIONS IT WORKS');
-                  print(task);
                 },
                 icon: Icon(
                   Icons.calendar_today_outlined,
