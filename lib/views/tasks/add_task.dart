@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:super_planner/components/small_button.dart';
 import 'package:super_planner/constants.dart';
-
+import 'package:super_planner/services/db.dart';
 
 import 'package:super_planner/components/back_button.dart';
 class AddTask extends StatefulWidget {
@@ -36,6 +36,8 @@ class _AddTask extends State<AddTask> {
 
   @override
   Widget build(BuildContext context) {
+    final DBService db = DBService();
+
     var rawReminders = [
       "1 hour before", 
       "6 hours before", 
@@ -197,7 +199,11 @@ class _AddTask extends State<AddTask> {
                   SmallButton(
                     height: 50, 
                     width: 50,
-                    image: 'assets/icons/save_icon.png'
+                    image: 'assets/icons/save_icon.png',
+                    press: () async {
+                      var task = await db.createTask(_tasktitleController.text, _notesController.text);
+                      print(task);
+                    },
                   ),  
                 ],
               )
