@@ -39,12 +39,17 @@ class DBService {
   }
 
   // To do: Add category and date fields
-  Future createEvent(String title, String notes, TimeOfDay time) async {
+  Future createEvent(String title, String notes, TimeOfDay startTime, TimeOfDay endTime, DateTime date) async {
+   
+    DateTime startTimestamp = new DateTime(date.year, date.month, date.day, startTime.hour, startTime.minute);
+    DateTime endTimestamp = new DateTime(date.year, date.month, date.day, endTime.hour, endTime.minute);
+
     return eventCollection.add({
       'email': user.email,
       'title': title,
       'notes': notes,
-      //'time': time,
+      'startTime': startTimestamp, // Timestamp data type
+      'endTime': endTimestamp,     // Timestamp data type
     });
   }
 }

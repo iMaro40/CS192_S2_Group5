@@ -21,6 +21,8 @@ class _AddEvent extends State<AddEvent> {
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
   String _reminder = "1 day before";
+  DateTime date;
+  TimeOfDay starttime, endtime;
 
     _selectstartTime(BuildContext context) async {
       final TimeOfDay picked = await showTimePicker(
@@ -33,6 +35,7 @@ class _AddEvent extends State<AddEvent> {
               "${picked.hour}:${picked.minute}";
           _starttimeController.text = time;
         });
+      starttime = picked;
     }
 
     _selectendTime(BuildContext context) async {
@@ -46,6 +49,7 @@ class _AddEvent extends State<AddEvent> {
               "${picked.hour}:${picked.minute}";
           _endtimeController.text = time;
         });
+        endtime = picked;
     }
 
     _selectDate(BuildContext context) async {
@@ -61,6 +65,7 @@ class _AddEvent extends State<AddEvent> {
               "${picked.toLocal().day}/${picked.toLocal().month}/${picked.toLocal().year}";
           _dateController.text = date;
         });
+      date = picked;
     }
 
   @override
@@ -273,10 +278,7 @@ class _AddEvent extends State<AddEvent> {
                     width: 50,
                     image: 'assets/icons/save_icon.png',
                     press: () async {
-                      var timeString = _timeController.text;
-                      TimeOfDay time = TimeOfDay(hour:int.parse(timeString.split(":")[0]),minute: int.parse(timeString.split(":")[1]));
-                      print(time);
-                      var event = await db.createEvent(_tasktitleController.text, _notesController.text, time);
+                      var event = await db.createEvent(_tasktitleController.text, _notesController.text, starttime, endtime, date);
                       print(event);
                     },
                   ),  
