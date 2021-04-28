@@ -108,6 +108,7 @@ class _ViewTask extends State<ViewTask> {
                         fontWeight: FontWeight.bold 
                       ),
                     ),
+                    SizedBox(height: 10.0), 
                     Text(
                       formatter.format(widget.task['dueDate'].toDate()),
                       style: TextStyle(fontSize: 16),
@@ -122,7 +123,7 @@ class _ViewTask extends State<ViewTask> {
                         fontWeight: FontWeight.bold 
                       ),
                     ),
-                    SizedBox(height: 20.0),
+                    SizedBox(height: 10.0),
                     Text(
                       widget.task['reminder'],
                       style: TextStyle(fontSize: 16),
@@ -137,7 +138,7 @@ class _ViewTask extends State<ViewTask> {
                         fontWeight: FontWeight.bold 
                       ),
                     ),
-                    SizedBox(height: 20.0), 
+                    SizedBox(height: 10.0), 
                     Container(
                       width: MediaQuery.of(context).size.width,
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
@@ -166,7 +167,7 @@ class _ViewTask extends State<ViewTask> {
                         fontWeight: FontWeight.bold 
                       ),
                     ),
-                    SizedBox(height: 20.0), 
+                    SizedBox(height: 10.0), 
                     Text(
                       widget.task['description'],
                       style: TextStyle(fontSize: 16),
@@ -191,44 +192,44 @@ class _ViewTask extends State<ViewTask> {
                       height: 50, 
                       width: 50,
                       image: 'assets/icons/save_icon.png',
-                      press: () async {
-                        if(addTaskFormKey.currentState.validate()) {
-                          try {
-                            String title = _tasktitleController.text;
-                            String description = _notesController.text;
-                            DateTime startDate = DateTime.now();
-                            DateTime dueDate = selectedDate;
-                            var reminder = _reminder;
+                      // press: () async {
+                      //   if(addTaskFormKey.currentState.validate()) {
+                      //     try {
+                      //       String title = _tasktitleController.text;
+                      //       String description = _notesController.text;
+                      //       DateTime startDate = DateTime.now();
+                      //       DateTime dueDate = selectedDate;
+                      //       var reminder = _reminder;
 
-                            setState(() { _loading = true; });
+                      //       setState(() { _loading = true; });
 
-                            await db.createTask(title, description, startDate, dueDate, categories, reminder);
+                      //       await db.createTask(title, description, startDate, dueDate, categories, reminder);
 
-                            setState(() { _loading = false; });
+                      //       setState(() { _loading = false; });
 
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Home(),
-                              ),
-                              (route) => false,
-                            );
-                          }
-                          catch(err) {
-                            final snackBar = SnackBar(
-                                content: Text(err),
-                                action: SnackBarAction(
-                                  label: 'CLOSE',
-                                  onPressed: () {
+                      //       Navigator.pushAndRemoveUntil(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //           builder: (context) => Home(),
+                      //         ),
+                      //         (route) => false,
+                      //       );
+                      //     }
+                      //     catch(err) {
+                      //       final snackBar = SnackBar(
+                      //           content: Text(err),
+                      //           action: SnackBarAction(
+                      //             label: 'CLOSE',
+                      //             onPressed: () {
                           
-                                  },
-                                ),
-                              );
+                      //             },
+                      //           ),
+                      //         );
 
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          }
-                        }
-                      },
+                      //         ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      //     }
+                      //   }
+                      // },
                     ),  
                   ],
                 )

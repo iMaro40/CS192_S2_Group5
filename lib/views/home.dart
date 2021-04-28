@@ -16,11 +16,8 @@ import 'package:super_planner/views/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:super_planner/views/tasks/add_task.dart';
 import 'package:super_planner/services/db.dart';
-<<<<<<< HEAD
 import 'package:super_planner/views/tasks/view_task.dart';
-=======
 import 'package:intl/intl.dart';
->>>>>>> 1162f89fa56096753dddd2b69324819679a74e37
 class Home extends StatefulWidget {
 
   @override
@@ -132,7 +129,7 @@ class _HomeState extends State<Home> {
                   )
                 ],
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+              //SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               FutureBuilder(
                 future: db.getEvents(),
                 builder: (context, snapshot) {
