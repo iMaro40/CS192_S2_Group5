@@ -7,20 +7,20 @@ class LabeledCheckbox extends StatelessWidget {
     this.label,
     this.padding,
     this.value,
-    this.onChanged,
+    //this.onChanged,
   }) : super(key: key);
 
   final String label;
   final EdgeInsets padding;
   final bool value;
-  final Function onChanged;
+  //final Function onChanged;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        onChanged(!value);
-      },
+      // onTap: () {
+      //   //onChanged(!value);
+      // },
       child: Padding(
         padding: padding,
         child: Row(
@@ -29,7 +29,7 @@ class LabeledCheckbox extends StatelessWidget {
             Checkbox(
               value: value,
               onChanged: (bool newValue) {
-                onChanged(newValue);
+                //onChanged(newValue);
               },
             ),
           ],
@@ -65,11 +65,11 @@ class _DisplayTask extends State<DisplayTask> {
         label: widget.taskName,
         padding: const EdgeInsets.symmetric(horizontal:30.0, vertical: 10.0),
         value: _isSelected,
-        onChanged: (bool newValue) {
-          setState(() {
-            _isSelected = newValue;
-          });
-        },
+        // onChanged: (bool newValue) {
+        //   setState(() {
+        //     _isSelected = newValue;
+        //   });
+        // },
       ),  
     );
   }

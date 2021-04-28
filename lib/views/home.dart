@@ -15,6 +15,7 @@ import 'package:super_planner/views/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:super_planner/views/tasks/add_task.dart';
 import 'package:super_planner/services/db.dart';
+import 'package:super_planner/views/tasks/view_task.dart';
 class Home extends StatefulWidget {
 
   @override
@@ -179,7 +180,7 @@ class _HomeState extends State<Home> {
                   )
                 ],
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.03), 
+              //SizedBox(height: MediaQuery.of(context).size.height * 0.03), 
               FutureBuilder(
                 future: db.getTasks(),
                 builder: (context, snapshot) {
@@ -190,13 +191,23 @@ class _HomeState extends State<Home> {
                       shrinkWrap: true,
                       itemCount: tasks != null ? tasks.length : 0,
                       itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            DisplayTask(
-                              taskName: tasks[index]['title'],
-                            ),
-                          ],
-                        );
+                        return 
+                          Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context, MaterialPageRoute(builder: (context) => ViewTask(task: tasks[index])) 
+                                  );
+                                },
+                                child: DisplayTask(
+                                  taskName: tasks[index]['title'],
+                                ),
+                              ),
+                              SizedBox(height: 5.0)
+                            ],
+                          );
+                        
                       },
                     );
                   }
