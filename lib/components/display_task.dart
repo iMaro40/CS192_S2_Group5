@@ -54,6 +54,7 @@ class _DisplayTask extends State<DisplayTask> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.only(bottom: 3.0),
       decoration: new BoxDecoration(
         color: Colors.white,
         border: Border.all(width: 1.0, color: Colors.black),
