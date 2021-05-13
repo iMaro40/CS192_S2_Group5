@@ -17,6 +17,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:super_planner/views/tasks/add_task.dart';
 import 'package:super_planner/services/db.dart';
 import 'package:super_planner/views/tasks/view_task.dart';
+import 'package:super_planner/views/quote/edit_quote.dart';
 import 'package:intl/intl.dart';
 class Home extends StatefulWidget {
 
@@ -101,7 +102,11 @@ class _HomeState extends State<Home> {
                   SmallButton(
                     height: 35, 
                     width: 35,
-                    image: 'assets/images/edit_btn.png'
+                    image: 'assets/images/edit_btn.png',
+                    press:  () {
+                      Navigator.push(
+                      context,MaterialPageRoute(builder: (context) => EditQuote()));
+                    },
                   )
                 ],
               ),
