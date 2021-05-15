@@ -4,25 +4,18 @@ import 'package:super_planner/components/display_tabs.dart';
 import 'package:super_planner/components/display_task.dart';
 import 'package:super_planner/components/quote_tabs.dart';
 import 'package:super_planner/constants.dart';
-import 'package:super_planner/services/auth.dart';
 import 'package:super_planner/components/small_button.dart';
-
-import 'package:super_planner/models/user.dart';
-import 'package:provider/provider.dart';
 import 'package:super_planner/views/calendar/add_event.dart';
-
-import 'package:super_planner/views/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:super_planner/views/tasks/add_task.dart';
 import 'package:super_planner/services/db.dart';
 class Home extends StatefulWidget {
-
+  
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  final AuthService _auth = AuthService();
   final DBService db = DBService();
 
   @override
@@ -207,72 +200,6 @@ class _HomeState extends State<Home> {
             ],
           )
         ), 
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: Color(0xff40a8c4),
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: 12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(
-                onPressed: (){
-                  // redirect to home page
-                },
-                icon: Icon(
-                  Icons.home,
-                  color: Colors.white,
-                ),
-                iconSize: 25.0,
-              ),
-              IconButton(
-                onPressed: () async {
-                  // redirect to calendar page
-                },
-                icon: Icon(
-                  Icons.calendar_today_outlined,
-                  color: Colors.white,
-                ),
-                iconSize: 25.0,
-              ),
-              IconButton(
-                onPressed: (){
-                  // redirect to tasks page
-                },
-                icon: Icon(
-                  Icons.notifications_none,
-                  color: Colors.white,
-                ),
-                iconSize: 25.0,
-              ),
-              IconButton(
-                onPressed: (){
-                  // redirect to settings page
-                },
-                icon: Icon(
-                  Icons.settings,
-                  color: Colors.white,
-                ),
-                iconSize: 25.0,
-              ),
-              IconButton( // Log Out
-                onPressed: () async {
-                  await _auth.logOut();
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                    builder: (context) => Login()),
-                  );
-                },
-                icon: Icon(
-                  Icons.exit_to_app,
-                  color: Colors.white,
-                ),
-                iconSize: 25.0,
-              ),
-            ],
-          ),
-        )
       ),
     );
   }
