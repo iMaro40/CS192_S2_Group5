@@ -1,4 +1,5 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:super_planner/components/display_tabs.dart';
 import 'package:super_planner/components/display_task.dart';
@@ -9,6 +10,9 @@ import 'package:super_planner/views/calendar/add_event.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:super_planner/views/tasks/add_task.dart';
 import 'package:super_planner/services/db.dart';
+import 'package:super_planner/views/tasks/view_task.dart';
+import 'package:super_planner/views/quote/edit_quote.dart';
+import 'package:intl/intl.dart';
 class Home extends StatefulWidget {
   
   @override
@@ -91,7 +95,11 @@ class _HomeState extends State<Home> {
                   SmallButton(
                     height: 35, 
                     width: 35,
-                    image: 'assets/images/edit_btn.png'
+                    image: 'assets/images/edit_btn.png',
+                    press:  () {
+                      Navigator.push(
+                      context,MaterialPageRoute(builder: (context) => EditQuote()));
+                    },
                   )
                 ],
               ),
@@ -112,21 +120,51 @@ class _HomeState extends State<Home> {
                     height: 35, 
                     width: 35,
                     image: 'assets/images/add_btn.png', 
-                    press:  () => Navigator.push(
-                      context,MaterialPageRoute(builder: (context) => AddEvent()),
-                    )
+                    press:  () {
+                      Navigator.push(
+                      context,MaterialPageRoute(builder: (context) => AddEvent()));
+                    },
                   )
                 ],
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-              DisplayTabs(
-                color: Colors.orange[100],
-                icon_color: Colors.orange,
-                time: '10:30 AM - 12:00PM',
-                event: 'CS 33 Data Structures',
-                tags: 'Lecture', 
-                notes: 'Mr Kevin Buno // Zoom'
+              //SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+              FutureBuilder(
+                future: db.getEvents(),
+                builder: (context, snapshot) {
+                  if(snapshot.hasData) {
+                    var events = snapshot.data;
+              
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: events != null ? events.length : 0,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            DisplayTabs(
+                              color: Colors.orange[100],
+                              icon_color: Colors.orange,
+                              time: showTime(events[index]['startTime'], events[index]['endTime']),
+                              event: events[index]['title'],
+                              tags: listTags(events[index]['categories']),
+                              notes: events[index]['notes'],
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                  
+                  return Container();
+                },
               ),
+              // DisplayTabs(
+              //   color: Colors.orange[100],
+              //   icon_color: Colors.orange,
+              //   time: '10:30 AM - 12:00PM',
+              //   event: 'CS 33 Data Structures',
+              //   tags: 'Lecture', 
+              //   notes: 'Mr Kevin Buno // Zoom'
+              // ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -172,7 +210,7 @@ class _HomeState extends State<Home> {
                   )
                 ],
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.03), 
+              //SizedBox(height: MediaQuery.of(context).size.height * 0.03), 
               FutureBuilder(
                 future: db.getTasks(),
                 builder: (context, snapshot) {
@@ -183,13 +221,23 @@ class _HomeState extends State<Home> {
                       shrinkWrap: true,
                       itemCount: tasks != null ? tasks.length : 0,
                       itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            DisplayTask(
-                              taskName: tasks[index]['title'],
-                            ),
-                          ],
-                        );
+                        return 
+                          Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context, MaterialPageRoute(builder: (context) => ViewTask(task: tasks[index])) 
+                                  );
+                                },
+                                child: DisplayTask(
+                                  taskName: tasks[index]['title'],
+                                ),
+                              ),
+                              SizedBox(height: 5.0)
+                            ],
+                          );
+                        
                       },
                     );
                   }
@@ -202,5 +250,22 @@ class _HomeState extends State<Home> {
         ), 
       ),
     );
+  }
+
+  String showTime(Timestamp start, Timestamp end) {
+    DateTime startDateTime = DateTime.fromMicrosecondsSinceEpoch(start.microsecondsSinceEpoch);
+    DateTime endDateTime = DateTime.fromMicrosecondsSinceEpoch(end.microsecondsSinceEpoch);
+
+    String s = DateFormat.jm().format(startDateTime);
+    String e = DateFormat.jm().format(endDateTime);
+
+    return (s + ' - ' + e);
+  }
+
+  String listTags(List<dynamic> categories) {
+    List<String> list = [];
+    if (categories.length == 0) return "";
+    for (String tag in categories) list.add(tag);
+    return list.join(', ');
   }
 }
