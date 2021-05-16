@@ -27,6 +27,14 @@ class _HomeState extends State<Home> {
     
     var user = FirebaseAuth.instance.currentUser;
     String _displayName = 'User';
+    String quote = '';
+
+    // ignore: todo
+    // TODO: properly handle error
+    db.getQuote().then((q) {
+      if (q != null) quote = q['quote'];
+    }).onError((error, stackTrace) => null);
+
 
     if (user != null) {
       _displayName = user.displayName;
@@ -110,7 +118,7 @@ class _HomeState extends State<Home> {
                   if (snapshot.hasData) {
                     return QuoteTab(
                     color: Colors.blue[100],
-                    quote: snapshot.data['quote'],
+                    quote: quote,
                     );
                   }
                   return Container();

@@ -64,15 +64,9 @@ class DBService {
     return quote;
   }
 
-  Future createQuote(String email) async {
-    String defaultQuote = '\"All our dreams can come true, if we have the courage to pursue them.\”\n\- Walt Disney';
-
-    return quoteCollection.doc(email).set({
-      'quote': defaultQuote,
-    });
-  }
-
   Future editQuote(String newQuote) async {
-    return quoteCollection.doc(user.email).update({'quote': newQuote});
+    return quoteCollection.doc(user.email).set({
+      'quote': newQuote,
+    });
   }
 }

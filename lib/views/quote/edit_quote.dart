@@ -18,9 +18,11 @@ class _EditQuote extends State<EditQuote> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: todo
+    // TODO: properly handle error
     db.getQuote().then((q) {
-      _quoteController.text = q['quote'];}
-    );
+      if (q != null) _quoteController.text = q['quote'];}
+    ).onError((error, stackTrace) => null);
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
