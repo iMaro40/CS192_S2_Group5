@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class DBService {
   final CollectionReference taskCollection = FirebaseFirestore.instance.collection('tasks');
   final CollectionReference eventCollection = FirebaseFirestore.instance.collection('events');
+  final CollectionReference quoteCollection = FirebaseFirestore.instance.collection('quotes');
   var user = FirebaseAuth.instance.currentUser;
 
   Future getTasks() async {
@@ -56,5 +57,22 @@ class DBService {
       'categories': categories,
       'reminder': reminder,
     });
+  }
+
+  Future getQuote() async {
+    var quote = await quoteCollection.doc(user.email).get();
+    return quote;
+  }
+
+  Future createQuote(String email) async {
+    String defaultQuote = '\"All our dreams can come true, if we have the courage to pursue them.\”\n\- Walt Disney';
+
+    return quoteCollection.doc(email).set({
+      'quote': defaultQuote,
+    });
+  }
+
+  Future editQuote(String newQuote) async {
+    return quoteCollection.doc(user.email).update({'quote': newQuote});
   }
 }

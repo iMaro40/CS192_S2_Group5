@@ -4,8 +4,6 @@ import 'package:super_planner/constants.dart';
 import 'package:super_planner/components/back_button.dart';
 import 'package:super_planner/services/db.dart';
 import 'package:super_planner/views/home.dart';
-import 'package:super_planner/services/auth.dart';
-import 'package:super_planner/views/login.dart';
 
 class EditQuote extends StatefulWidget {
   @override
@@ -14,13 +12,16 @@ class EditQuote extends StatefulWidget {
 
 
 class _EditQuote extends State<EditQuote> {
-  final TextEditingController _quoteController = new TextEditingController(text: "\"All our dreams can come true, if we have the courage to pursue them.\"\n\n-Walt Disney");
-  final AuthService _auth = AuthService();
+  final TextEditingController _quoteController = TextEditingController();
   final DBService db = DBService();
   bool _loading = false;
 
   @override
   Widget build(BuildContext context) {
+    db.getQuote().then((q) {
+      _quoteController.text = q['quote'];}
+    );
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
@@ -47,6 +48,7 @@ class _EditQuote extends State<EditQuote> {
                     ),
                     SizedBox(height: 20.0),
                     TextFormField(
+                      textInputAction: TextInputAction.done,
                       controller: _quoteController,
                       maxLines: 6,
                       style: TextStyle(
@@ -84,6 +86,18 @@ class _EditQuote extends State<EditQuote> {
                       height: 50, 
                       width: 50,
                       image: 'assets/icons/save_icon.png',
+                      press: () async {
+                        setState(() { _loading = true; });
+                        await db.editQuote(_quoteController.text);
+                        setState(() { _loading = false; });
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Home(),
+                          ),
+                          (route) => false,
+                        );
+                      },
                     ),  
                   ],
                 ),

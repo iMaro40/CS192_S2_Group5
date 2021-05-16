@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:super_planner/constants.dart';
 import 'package:super_planner/views/login.dart';
 import 'package:super_planner/services/auth.dart';
+import 'package:super_planner/services/db.dart';
 class Register extends StatefulWidget {
 
   @override
@@ -12,6 +13,7 @@ class Register extends StatefulWidget {
 
 class RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
+  final DBService db = DBService();
 
   final registerFormKey = GlobalKey<FormState>();
 
@@ -180,6 +182,7 @@ class RegisterState extends State<Register> {
                               
                               UserCredential result = await _auth.register(emailController.text, passwordController.text);
                               await result.user.updateProfile( displayName: nameController.text );
+                              await db.createQuote(emailController.text);
 
                               Navigator.pushReplacement(
                                 context,

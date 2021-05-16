@@ -104,10 +104,18 @@ class _HomeState extends State<Home> {
                 ],
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-              QuoteTab(
-                color: Colors.blue[100], 
-                quote: '\"All our dreams can come true, if we have the courage to pursue them.\”\n\- Walt Disney'
-              ),            
+              FutureBuilder(
+                future: db.getQuote(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return QuoteTab(
+                    color: Colors.blue[100],
+                    quote: snapshot.data['quote'],
+                    );
+                  }
+                  return Container();
+                },
+              ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
