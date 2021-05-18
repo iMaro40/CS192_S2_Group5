@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/user.dart';
 import '../views/login.dart';
 import '../views/home.dart';
+import '../views/settings.dart';
 
 List<Widget> _widgetDisplay = <Widget>[
    Home(),
@@ -18,12 +19,7 @@ List<Widget> _widgetDisplay = <Widget>[
        textAlign: TextAlign.center,
      ),
    ),
-   Center(
-     child: Text(
-       'PUT VIEW 4 HERE, probably put log out here',
-       textAlign: TextAlign.center,
-     ),
-   ),
+  Settings(),
 ];
 
 class Display extends StatefulWidget {
