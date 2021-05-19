@@ -6,7 +6,6 @@ import 'package:super_planner/services/db.dart';
 import 'package:super_planner/views/home.dart';
 
 class AddTask extends StatefulWidget {
-
   @override
   _AddTask createState() => _AddTask();
 }
