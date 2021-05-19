@@ -179,13 +179,11 @@ class _HomeState extends State<Home> {
                   )
                 ],
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.03), 
               FutureBuilder(
                 future: db.getTasks(),
                 builder: (context, snapshot) {
                   if(snapshot.hasData) {
                     var tasks = snapshot.data;
-              
                     return ListView.builder(
                       shrinkWrap: true,
                       itemCount: tasks != null ? tasks.length : 0,
@@ -195,12 +193,12 @@ class _HomeState extends State<Home> {
                             DisplayTask(
                               taskName: tasks[index]['title'],
                             ),
+                            SizedBox(height: 10)
                           ],
                         );
                       },
                     );
                   }
-                  
                   return Container();
                 },
               ),
