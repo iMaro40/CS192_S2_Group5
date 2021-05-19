@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:super_planner/components/calendar_widget.dart';
+import 'package:super_planner/views/calendar.dart';
 import '../models/user.dart';
 import '../views/login.dart';
 import '../views/home.dart';
@@ -7,12 +9,7 @@ import '../views/settings.dart';
 
 List<Widget> _widgetDisplay = <Widget>[
    Home(),
-   Center(
-     child: Text(
-       'PUT VIEW 2 HERE',
-       textAlign: TextAlign.center,
-     ),
-   ),
+   TableBasicsExample(),
    Center(
      child: Text(
        'PUT VIEW 3 HERE',
