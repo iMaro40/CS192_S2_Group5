@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:super_planner/constants.dart';
 import 'package:super_planner/components/settings_tabs.dart';
-import 'package:super_planner/views/login.dart';
 import 'package:super_planner/services/auth.dart';
 class Settings extends StatefulWidget {
   @override

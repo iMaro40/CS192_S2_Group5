@@ -23,18 +23,5 @@ class MyApp extends StatelessWidget {
         home: Wrapper()
       ),
     );
-
-    // return StreamProvider<CustomUser?>(
-    //   initialData: null,
-    //   create: (context) => AuthService().user,
-    //   child: Consumer<CustomUser?>(
-    //     builder: (context, user, child) {
-    //       return MaterialApp(
-    //         title: 'Super Planner',
-    //         theme: ThemeData(fontFamily: 'Source Sans Pro'),
-    //         home: Display(),
-    //       );
-    //   }),
-    // );
   }
 }
