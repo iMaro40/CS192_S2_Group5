@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:super_planner/constants.dart';
 
 class ScreenHeader extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final Function press;
-  const ScreenHeader({Key key, this.title, this.subtitle, this.press})
+  final String? title;
+  final String? subtitle;
+  final Function? press;
+  const ScreenHeader({Key? key, this.title, this.subtitle, this.press})
       : super(key: key);
 
   @override
@@ -33,11 +33,11 @@ class ScreenHeader extends StatelessWidget {
                   color: Colors.white,
                   size: 40.0,
                 ),
-                onPressed: press
+                onPressed: press as void Function()?
               ), 
               SizedBox(width: MediaQuery.of(context).size.width * 0.02),
               Text(
-                title,
+                title!,
                 textAlign: TextAlign.left,
                 style: TextStyle(
                     fontWeight: FontWeight.w800,
@@ -48,7 +48,7 @@ class ScreenHeader extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 150),
             child: Text(
-              subtitle,
+              subtitle!,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24,

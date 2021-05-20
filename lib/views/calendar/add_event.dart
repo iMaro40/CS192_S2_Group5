@@ -18,7 +18,7 @@ class _AddEvent extends State<AddEvent> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _starttimeController = TextEditingController();
   final TextEditingController _endtimeController = TextEditingController();
-  List<String> categories = [];
+  List<String?> categories = [];
 
   final addEventFormKey = GlobalKey<FormState>();
 
@@ -29,12 +29,12 @@ class _AddEvent extends State<AddEvent> {
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
   String _reminder = "1 day before";
-  DateTime date;
-  TimeOfDay starttime, endtime;
+  DateTime? date;
+  TimeOfDay? starttime, endtime;
   
 
     _selectstartTime(BuildContext context) async {
-      final TimeOfDay picked = await showTimePicker(
+      final TimeOfDay? picked = await showTimePicker(
           context: context,
           initialTime: selectedTime);
       if (picked != null && picked != selectedTime)
@@ -48,7 +48,7 @@ class _AddEvent extends State<AddEvent> {
     }
 
     _selectendTime(BuildContext context) async {
-      final TimeOfDay picked = await showTimePicker(
+      final TimeOfDay? picked = await showTimePicker(
           context: context,
           initialTime: selectedTime);
       if (picked != null && picked != selectedTime)
@@ -62,7 +62,7 @@ class _AddEvent extends State<AddEvent> {
     }
 
     _selectDate(BuildContext context) async {
-      final DateTime picked = await showDatePicker(
+      final DateTime? picked = await showDatePicker(
           context: context,
           initialDate: selectedDate,
           firstDate: DateTime(2019, 8),
@@ -77,7 +77,7 @@ class _AddEvent extends State<AddEvent> {
       date = picked;
     }
 
-  Future<String> createAlertDialog(BuildContext context){
+  Future<String?> createAlertDialog(BuildContext context){
 
     TextEditingController customController = TextEditingController();
 
@@ -152,7 +152,7 @@ class _AddEvent extends State<AddEvent> {
                         hintText: 'Enter event title...',
                         hintStyle: TextStyle(fontSize: 20), 
                       ),
-                      onSaved: (String value) {
+                      onSaved: (String? value) {
                         // This optional block of code can be used to run
                         // code when the user saves the form.
                       },
@@ -184,7 +184,7 @@ class _AddEvent extends State<AddEvent> {
                             ),                                                                           
                           ),
                           validator: (value) {
-                            if (value.isEmpty)
+                            if (value!.isEmpty)
                               return "Please enter a date for your task";
                             return null;
                           },
@@ -218,7 +218,7 @@ class _AddEvent extends State<AddEvent> {
                             ),                                                                           
                           ),
                           validator: (value) {
-                            if (value.isEmpty)
+                            if (value!.isEmpty)
                               return "Please enter a date for your task";
                             return null;
                           },
@@ -252,7 +252,7 @@ class _AddEvent extends State<AddEvent> {
                             ),                                                                           
                           ),
                           validator: (value) {
-                            if (value.isEmpty)
+                            if (value!.isEmpty)
                               return "Please enter a date for your task";
                             return null;
                           },
@@ -328,7 +328,7 @@ class _AddEvent extends State<AddEvent> {
                         hintText: 'Enter notes for your task...',
                         hintStyle: TextStyle(fontSize: 16), 
                       ),
-                      onSaved: (String value) {
+                      onSaved: (String? value) {
                         // This optional block of code can be used to run
                         // code when the user saves the form.
                       },
@@ -354,7 +354,7 @@ class _AddEvent extends State<AddEvent> {
                       width: 50,
                       image: 'assets/icons/save_icon.png',
                       press: () async {
-                        if(addEventFormKey.currentState.validate()) {
+                        if(addEventFormKey.currentState!.validate()) {
                           try {
                             String title = _tasktitleController.text;
                             String description = _notesController.text;
@@ -364,7 +364,7 @@ class _AddEvent extends State<AddEvent> {
 
                             setState(() { _loading = true; });
 
-                            await db.createEvent(title, description, starttime, endtime, date, categories, reminder);
+                            await db.createEvent(title, description, starttime!, endtime!, date!, categories, reminder);
 
                             setState(() { _loading = false; });
 
@@ -404,7 +404,7 @@ class _AddEvent extends State<AddEvent> {
 }
 
 // chips helper
-Widget chipBuilder({String title, Function onTap}) {
+Widget chipBuilder({String? title, Function? onTap}) {
   return Container(
     padding: const EdgeInsets.fromLTRB(10, 10, 12, 10),
     decoration: BoxDecoration(
@@ -422,7 +422,7 @@ Widget chipBuilder({String title, Function onTap}) {
         ),
         SizedBox(width: 6),
         GestureDetector(
-          onTap: onTap,
+          onTap: onTap as void Function()?,
           child: Icon(
             Icons.clear,
             size: 20,

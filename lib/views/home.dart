@@ -26,14 +26,14 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     
     var user = FirebaseAuth.instance.currentUser;
-    String _displayName = 'User';
-    String quote = '';
+    String? _displayName = 'User';
+    String? quote = '';
 
     // ignore: todo
     // TODO: properly handle error
     db.getQuote().then((q) {
       if (q != null) quote = q['quote'];
-    }).onError((error, stackTrace) => null);
+    }).onError((dynamic error, stackTrace) => null);
 
 
     if (user != null) {
@@ -279,7 +279,7 @@ class _HomeState extends State<Home> {
   String listTags(List<dynamic> categories) {
     List<String> list = [];
     if (categories.length == 0) return "";
-    for (String tag in categories) list.add(tag);
+    for (String tag in categories as Iterable<String>) list.add(tag);
     return list.join(', ');
   }
 }

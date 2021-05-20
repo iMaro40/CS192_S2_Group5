@@ -3,16 +3,16 @@ import 'package:super_planner/constants.dart';
 
 class LabeledCheckbox extends StatelessWidget {
   const LabeledCheckbox({
-    Key key,
+    Key? key,
     this.label,
     this.padding,
     this.value,
     //this.onChanged,
   }) : super(key: key);
 
-  final String label;
-  final EdgeInsets padding;
-  final bool value;
+  final String? label;
+  final EdgeInsets? padding;
+  final bool? value;
   //final Function onChanged;
 
   @override
@@ -22,13 +22,13 @@ class LabeledCheckbox extends StatelessWidget {
       //   //onChanged(!value);
       // },
       child: Padding(
-        padding: padding,
+        padding: padding!,
         child: Row(
           children: <Widget>[
-            Expanded(child: Text(label, style: title_tabs_text)),
+            Expanded(child: Text(label!, style: title_tabs_text)),
             Checkbox(
               value: value,
-              onChanged: (bool newValue) {
+              onChanged: (bool? newValue) {
                 //onChanged(newValue);
               },
             ),
@@ -40,8 +40,8 @@ class LabeledCheckbox extends StatelessWidget {
 }
 
 class DisplayTask extends StatefulWidget {
-  final String taskName;
-  const DisplayTask({Key key,@required this.taskName}) : super(key: key);
+  final String? taskName;
+  const DisplayTask({Key? key,required this.taskName}) : super(key: key);
 
   @override
   _DisplayTask createState() => _DisplayTask();

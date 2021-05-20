@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class CustomUser {
   String _uid = '';
-  String _name = '';
+  String? _name = '';
   CustomUser(User user) {
     this._uid = user.uid;
     this._name = user.displayName;
@@ -12,7 +12,7 @@ class CustomUser {
     return this._uid;
   }
 
-  String getName() {
+  String? getName() {
     return this._name;
   }
 }

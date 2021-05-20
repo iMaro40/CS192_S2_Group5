@@ -174,12 +174,12 @@ class RegisterState extends State<Register> {
                       // ignore: deprecated_member_use
                       child: ElevatedButton(
                         onPressed: () async { 
-                          if (registerFormKey.currentState.validate()) { 
+                          if (registerFormKey.currentState!.validate()) { 
                             try {
                               setState(() { _loading = true; });
                               
-                              UserCredential result = await _auth.register(emailController.text, passwordController.text);
-                              await result.user.updateProfile( displayName: nameController.text );
+                              UserCredential result = await (_auth.register(emailController.text, passwordController.text) as FutureOr<UserCredential>);
+                              await result.user!.updateProfile( displayName: nameController.text );
 
                               Navigator.pushReplacement(
                                 context,
@@ -192,7 +192,7 @@ class RegisterState extends State<Register> {
                             catch(err) {
                               setState(() { _loading = false; });
                               String errorMsg = '';
-                              String code = err.code != null ? err.code : err.toString();
+                              String? code = err.code != null ? err.code : err.toString();
 
                               switch(code) {
                                 case 'email-already-in-use': 

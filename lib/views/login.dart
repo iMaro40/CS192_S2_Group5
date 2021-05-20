@@ -138,7 +138,7 @@ class LoginState extends State<Login> {
                     // ignore: deprecated_member_use
                     child: ElevatedButton(
                       onPressed: () async {
-                        if (loginFormKey.currentState.validate()) { //valid login, do submit
+                        if (loginFormKey.currentState!.validate()) { //valid login, do submit
                           try {
                             setState(() { _loading = true; });
 

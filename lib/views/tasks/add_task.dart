@@ -16,7 +16,7 @@ class _AddTask extends State<AddTask> {
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
-  List<String> categories = [];
+  List<String?> categories = [];
 
   final addTaskFormKey = GlobalKey<FormState>();
 
@@ -25,10 +25,10 @@ class _AddTask extends State<AddTask> {
   bool _loading = false;
 
   DateTime selectedDate = DateTime.now();
-  String _reminder = "1 day before";
+  String? _reminder = "1 day before";
 
     _selectDate(BuildContext context) async {
-      final DateTime picked = await showDatePicker(
+      final DateTime? picked = await showDatePicker(
           context: context,
           initialDate: selectedDate,
           firstDate: DateTime(2019, 8),
@@ -42,7 +42,7 @@ class _AddTask extends State<AddTask> {
         });
     }
 
-  Future<String> createAlertDialog(BuildContext context){
+  Future<String?> createAlertDialog(BuildContext context){
 
     TextEditingController customController = TextEditingController();
   
@@ -151,7 +151,7 @@ class _AddTask extends State<AddTask> {
                             ),                                                                           
                           ),
                           validator: (value) {
-                            if (value.isEmpty)
+                            if (value!.isEmpty)
                               return "Please enter a date.";
                             return null;
                           },
@@ -177,7 +177,7 @@ class _AddTask extends State<AddTask> {
                         ),
                         isExpanded: true,
                         items: reminder,
-                        onChanged: (value) {
+                        onChanged: (dynamic value) {
                           setState(() {
                             _reminder = value;
                           });
@@ -252,7 +252,7 @@ class _AddTask extends State<AddTask> {
                         hintText: 'Enter notes for your task...',
                         hintStyle: TextStyle(fontSize: 16), 
                       ),
-                      onSaved: (String value) {
+                      onSaved: (String? value) {
                         // This optional block of code can be used to run
                         // code when the user saves the form.
                       },
@@ -277,7 +277,7 @@ class _AddTask extends State<AddTask> {
                       width: 50,
                       image: 'assets/icons/save_icon.png',
                       press: () async {
-                        if(addTaskFormKey.currentState.validate()) {
+                        if(addTaskFormKey.currentState!.validate()) {
                           try {
                             String title = _tasktitleController.text;
                             String description = _notesController.text;
@@ -327,7 +327,7 @@ class _AddTask extends State<AddTask> {
 }
 
 // chips helper
-Widget chipBuilder({String title, Function onTap}) {
+Widget chipBuilder({String? title, Function? onTap}) {
   return Container(
     padding: const EdgeInsets.fromLTRB(10, 10, 12, 10),
     decoration: BoxDecoration(
@@ -345,7 +345,7 @@ Widget chipBuilder({String title, Function onTap}) {
         ),
         SizedBox(width: 6),
         GestureDetector(
-          onTap: onTap,
+          onTap: onTap as void Function()?,
           child: Icon(
             Icons.clear,
             size: 20,

@@ -22,7 +22,7 @@ class _EditQuote extends State<EditQuote> {
     // TODO: properly handle error
     db.getQuote().then((q) {
       if (q != null) _quoteController.text = q['quote'];}
-    ).onError((error, stackTrace) => null);
+    ).onError((dynamic error, stackTrace) => null);
 
     return Scaffold(
       resizeToAvoidBottomInset: true,

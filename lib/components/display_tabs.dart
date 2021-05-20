@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:super_planner/constants.dart';
 
 class DisplayTabs extends StatelessWidget {
-  final Color color;
-  final Color icon_color;
-  final String time;
-  final String event; 
-  final String tags; 
-  final String notes;  
-  final String image;
-  final Function press;
+  final Color? color;
+  final Color? icon_color;
+  final String? time;
+  final String? event; 
+  final String? tags; 
+  final String? notes;  
+  final String? image;
+  final Function? press;
 
   const DisplayTabs({
-    Key key,
+    Key? key,
     this.color, 
     this.icon_color, 
     this.time,
@@ -46,7 +46,7 @@ class DisplayTabs extends StatelessWidget {
               ),
               SizedBox(width: MediaQuery.of(context).size.width * 0.01),
               Text( 
-                time, 
+                time!, 
                 style: time_tabs_text
               ),                      
             ],
@@ -56,7 +56,7 @@ class DisplayTabs extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text( 
-                event, 
+                event!, 
                 style: title_tabs_text
               ),    
               Container(
@@ -69,7 +69,7 @@ class DisplayTabs extends StatelessWidget {
                     Radius.circular(20.0)
                   )
                 ),
-                child: Text(tags)  
+                child: Text(tags!)  
               ),                                         
             ],
           ),  
@@ -77,7 +77,7 @@ class DisplayTabs extends StatelessWidget {
           Row(
             children: [
               Text( 
-                notes, 
+                notes!, 
                 style: notes_tabs_text
               )                    
             ],

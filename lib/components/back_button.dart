@@ -4,7 +4,7 @@ import 'package:super_planner/constants.dart';
 
 class ButtonBack extends StatelessWidget {
   const ButtonBack({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

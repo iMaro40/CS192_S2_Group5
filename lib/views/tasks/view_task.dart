@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 
 class ViewTask extends StatefulWidget {
   final dynamic task;
-  const ViewTask({Key key,@required this.task}) : super(key: key);
+  const ViewTask({Key? key,required this.task}) : super(key: key);
 
   @override
   _ViewTask createState() => _ViewTask();
@@ -36,7 +36,7 @@ class _ViewTask extends State<ViewTask> {
   String _reminder = "1 day before";
 
     _selectDate(BuildContext context) async {
-      final DateTime picked = await showDatePicker(
+      final DateTime? picked = await showDatePicker(
           context: context,
           initialDate: selectedDate,
           firstDate: DateTime(2019, 8),
@@ -243,7 +243,7 @@ class _ViewTask extends State<ViewTask> {
 }
 
 // chips helper
-Widget chipBuilder({String title, Function onTap}) {
+Widget chipBuilder({String? title, Function? onTap}) {
   return Container(
     padding: const EdgeInsets.fromLTRB(10, 10, 12, 10),
     decoration: BoxDecoration(

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:super_planner/constants.dart';
 
 class QuoteTab extends StatelessWidget {
-  final Color color; 
-  final String quote;  
-  final Function press;
+  final Color? color; 
+  final String? quote;  
+  final Function? press;
 
   const QuoteTab({
-    Key key,
+    Key? key,
     this.color, 
     this.quote,
     this.press,
@@ -27,7 +27,7 @@ class QuoteTab extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            quote, 
+            quote!, 
             style: quote_tab_text 
           )
         ],

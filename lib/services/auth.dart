@@ -4,11 +4,11 @@ import '../models/user.dart';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   
-  CustomUser createUser (User firebaseuser) {
+  CustomUser? createUser (User? firebaseuser) {
     return (firebaseuser != null) ? CustomUser(firebaseuser) : null;
   }
 
-  Stream<CustomUser> get user {
+  Stream<CustomUser?> get user {
     return _auth.authStateChanges().map(createUser);
   }
 

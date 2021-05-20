@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:super_planner/constants.dart';
 
 class SettingsTab extends StatelessWidget {
-  final IconData icon;
-  final String name;  
+  final IconData? icon;
+  final String? name;  
 
   const SettingsTab({
     this.icon,
@@ -27,7 +27,7 @@ class SettingsTab extends StatelessWidget {
           ),
           SizedBox(width: MediaQuery.of(context).size.height * 0.02),
           Text(
-            name,
+            name!,
             style: TextStyle(
                 color: Colors.black,
                 fontSize: 18,

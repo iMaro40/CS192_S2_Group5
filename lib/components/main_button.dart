@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:super_planner/constants.dart';
 
 class MainButton extends StatelessWidget {
-  final String text;
-  final Function press;
-  final Color color;
+  final String? text;
+  final Function? press;
+  final Color? color;
 
   const MainButton({
-    Key key,
+    Key? key,
     this.text,
     this.press,
     this.color,
@@ -20,7 +20,7 @@ class MainButton extends StatelessWidget {
     width: MediaQuery.of(context).size.width,
     // ignore: deprecated_member_use
     child: ElevatedButton(
-      onPressed: press,   
+      onPressed: press as void Function()?,   
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(light_blue),
       ),             
@@ -31,7 +31,7 @@ class MainButton extends StatelessWidget {
           constraints: BoxConstraints.expand(),
           alignment: Alignment.center,
           child: Text(
-            text,
+            text!,
             style: TextStyle(
               color: Colors.white,
               fontSize: 20,
