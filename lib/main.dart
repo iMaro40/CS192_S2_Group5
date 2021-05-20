@@ -14,9 +14,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<CustomUser?>.value(
+    return StreamProvider<CustomUser?>(
       initialData: null,
-      value: AuthService().user,
+      create: (_) => CustomUser,
       child: MaterialApp(
         title: 'Super Planner',
        theme: ThemeData(fontFamily: 'Source Sans Pro'),

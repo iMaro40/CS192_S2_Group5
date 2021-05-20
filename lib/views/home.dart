@@ -148,7 +148,7 @@ class _HomeState extends State<Home> {
                 future: db.getEvents(),
                 builder: (context, snapshot) {
                   if(snapshot.hasData) {
-                    var events = snapshot.data;
+                    dynamic events = snapshot.data;
               
                     return ListView.builder(
                       shrinkWrap: true,
@@ -231,7 +231,7 @@ class _HomeState extends State<Home> {
                 future: db.getTasks(),
                 builder: (context, snapshot) {
                   if(snapshot.hasData) {
-                    var tasks = snapshot.data;
+                    dynamic tasks = snapshot.data;
                     return ListView.builder(
                       shrinkWrap: true,
                       itemCount: tasks != null ? tasks.length : 0,

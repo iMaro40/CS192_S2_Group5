@@ -178,7 +178,7 @@ class RegisterState extends State<Register> {
                             try {
                               setState(() { _loading = true; });
                               
-                              UserCredential result = await (_auth.register(emailController.text, passwordController.text) as FutureOr<UserCredential>);
+                              UserCredential result = await (_auth.register(emailController.text, passwordController.text) as Future<UserCredential>);
                               await result.user!.updateProfile( displayName: nameController.text );
 
                               Navigator.pushReplacement(
@@ -192,7 +192,8 @@ class RegisterState extends State<Register> {
                             catch(err) {
                               setState(() { _loading = false; });
                               String errorMsg = '';
-                              String? code = err.code != null ? err.code : err.toString();
+                              dynamic error = err;
+                              String? code = error.code != null ? error.code : error.toString();
 
                               switch(code) {
                                 case 'email-already-in-use': 

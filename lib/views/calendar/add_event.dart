@@ -378,7 +378,7 @@ class _AddEvent extends State<AddEvent> {
                           }
                           catch(err) {
                             final snackBar = SnackBar(
-                                content: Text(err),
+                                content: Text(err.toString()),
                                 action: SnackBarAction(
                                   label: 'CLOSE',
                                   onPressed: () {

@@ -8,6 +8,10 @@ class DBService {
   final CollectionReference quoteCollection = FirebaseFirestore.instance.collection('quotes');
   var user = FirebaseAuth.instance.currentUser;
 
+  Future getUser() async {
+    return user;
+  }
+
   Future getTasks() async {
     var tasks = await taskCollection.where('email', isEqualTo: user!.email).get();
     var parsedTasks = tasks.docs.map( (task) {

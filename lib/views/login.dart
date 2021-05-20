@@ -156,7 +156,8 @@ class LoginState extends State<Login> {
                           catch(err) {
                             setState(() { _loading = false; });
                             String errorMsg = '';
-                            switch(err.code) {
+                            dynamic error = err;
+                            switch(error.code) {
                               case 'wrong-password': 
                                 errorMsg = 'ERROR: Wrong password!'; 
                                 break;

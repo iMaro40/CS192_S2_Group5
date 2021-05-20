@@ -301,7 +301,7 @@ class _AddTask extends State<AddTask> {
                           }
                           catch(err) {
                             final snackBar = SnackBar(
-                                content: Text(err),
+                                content: Text('Some error occured.'),
                                 action: SnackBarAction(
                                   label: 'CLOSE',
                                   onPressed: () {
