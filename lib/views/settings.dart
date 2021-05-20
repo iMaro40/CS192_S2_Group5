@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:super_planner/constants.dart';
 import 'package:super_planner/components/settings_tabs.dart';
 import 'package:super_planner/views/login.dart';
-
+import 'package:super_planner/services/auth.dart';
 class Settings extends StatefulWidget {
   @override
   _Settings createState() => _Settings();
@@ -33,10 +33,8 @@ class _Settings extends State<Settings> {
                   SettingsTab(icon: Icons.lock_outline, name: 'Security'),
                   SettingsTab(icon: Icons.wifi_outlined, name: 'Synced Apps'),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context, MaterialPageRoute(builder: (context) => Login()) 
-                      );
+                    onTap: () async {
+                      await AuthService().logOut();
                     },
                     child:  SettingsTab(icon: Icons.logout, name: 'Logout'),
                   ),

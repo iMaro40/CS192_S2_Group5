@@ -6,6 +6,8 @@ import 'package:super_planner/screens/display.dart';
 class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    return Consumer<CustomUser?>(
+      builder: (context, user, child) {
       final user = Provider.of<CustomUser?>(context);
       if(user == null) {
         return Login();
@@ -13,5 +15,6 @@ class Wrapper extends StatelessWidget {
       else {
         return Display();
       }
+    });
   }
 }
