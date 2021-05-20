@@ -226,7 +226,6 @@ class _HomeState extends State<Home> {
                   )
                 ],
               ),
-              //SizedBox(height: MediaQuery.of(context).size.height * 0.03), 
               FutureBuilder(
                 future: db.getTasks(),
                 builder: (context, snapshot) {

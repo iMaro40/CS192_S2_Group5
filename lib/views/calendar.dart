@@ -106,6 +106,12 @@ class _Calendar extends State<Calendar> {
                 calendarStyle: CalendarStyle(
                   // Use `CalendarStyle` to customize the UI
                   outsideDaysVisible: false,
+                  markerDecoration: 
+                  const BoxDecoration(color: const Color(4280693304), shape: BoxShape.circle),
+                  todayDecoration: 
+                  const BoxDecoration(color: const Color(0xff235784), shape: BoxShape.circle),
+                  selectedDecoration:
+                  const BoxDecoration(color: const Color(0xff40A8C4), shape: BoxShape.circle)
                 ),
                 onDaySelected: _onDaySelected,
                 onRangeSelected: _onRangeSelected,
@@ -134,12 +140,21 @@ class _Calendar extends State<Calendar> {
                             vertical: 4.0,
                           ),
                           decoration: BoxDecoration(
-                            border: Border.all(),
+                            color: Colors.orange[100],
                             borderRadius: BorderRadius.circular(12.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey,
+                                blurRadius: 2.0,
+                                spreadRadius: 0.0,
+                                offset: Offset(2.0, 2.0), // shadow direction: bottom right
+                              )
+                            ]
                           ),
                           child: ListTile(
-                            onTap: () => print('${value[index]}'),
+                            onTap: () => print('${value[index]}'), //navigate to view event
                             title: Text('${value[index]}'),
+                            subtitle: Text('1:00 PM - 2:30PM'),
                           ),
                         );
                       },
