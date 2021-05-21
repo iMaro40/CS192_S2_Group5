@@ -33,6 +33,7 @@ class _Calendar extends State<Calendar> {
 
   List<Event> _getEventsForDay(DateTime day) {
     // Implementation example
+    print(day);
     return kEvents[day] ?? [];
   }
 
@@ -90,6 +91,8 @@ class _Calendar extends State<Calendar> {
       FutureBuilder(
           future: db.getEvents(),
           builder: (context, snapshot) {
+            dynamic events = snapshot.data;
+            
             return Column(
               children: [
               TableCalendar<Event>(
