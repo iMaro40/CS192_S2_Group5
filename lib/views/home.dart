@@ -226,7 +226,6 @@ class _HomeState extends State<Home> {
                   )
                 ],
               ),
-              //SizedBox(height: MediaQuery.of(context).size.height * 0.03), 
               FutureBuilder(
                 future: db.getTasks(),
                 builder: (context, snapshot) {
@@ -279,7 +278,7 @@ class _HomeState extends State<Home> {
   String listTags(List<dynamic> categories) {
     List<String> list = [];
     if (categories.length == 0) return "";
-    for (String tag in categories as Iterable<String>) list.add(tag);
+    for (String tag in categories) list.add(tag);
     return list.join(', ');
   }
 }

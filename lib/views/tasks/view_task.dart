@@ -5,8 +5,9 @@ import 'package:super_planner/components/back_button.dart';
 import 'package:super_planner/services/db.dart';
 import 'package:super_planner/views/calendar/add_event.dart';
 import 'package:super_planner/views/home.dart';
+import 'package:super_planner/views/tasks/edit_task.dart';
 import 'package:intl/intl.dart';
-
+import 'package:super_planner/screens/display.dart';
 
 class ViewTask extends StatefulWidget {
   final dynamic task;
@@ -49,6 +50,32 @@ class _ViewTask extends State<ViewTask> {
           _dateController.text = date;
         });
     }
+  
+  Future<String?> createAlertDialog(BuildContext context){
+ 
+    return showDialog(context: context, builder: (context) {
+        return AlertDialog(
+          title: Text("Delete Task?"),
+          actions: <Widget>[
+            MaterialButton(
+              elevation: 5.0,
+              child: Text("Yes"),
+              onPressed: () {
+                Navigator.of(context).pop('Yes');
+              },
+            ),
+            MaterialButton(
+              elevation: 5.0,
+              child: Text("No"),
+              onPressed: () {
+                Navigator.of(context).pop('No');
+              },
+            )
+          ]
+        );
+      }
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,8 +103,21 @@ class _ViewTask extends State<ViewTask> {
             children: <Widget>[
               SizedBox(height: 100.0),
               Align(
-                alignment: Alignment.topLeft,
-                child: ButtonBack(),
+                alignment: FractionalOffset(0.075,0.6),
+                child: SmallButton(
+                  height: 20, 
+                  width: 20,
+                  image: 'assets/icons/back_icon.png',
+                  press: () async {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Display(), // or maybe pass the new editted task here
+                      ),
+                      (route) => false,
+                    );
+                  }
+                ),
               ),
               Padding (
                 padding: const EdgeInsets.all(50.0),
@@ -96,7 +136,7 @@ class _ViewTask extends State<ViewTask> {
                   // change
                     Text(
                       widget.task['title'],
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 20),
                     ),
               
                     SizedBox(height: 20.0), 
@@ -111,7 +151,7 @@ class _ViewTask extends State<ViewTask> {
                     SizedBox(height: 10.0), 
                     Text(
                       formatter.format(widget.task['dueDate'].toDate()),
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 20),
                     ),
                  
                     SizedBox(height: 20.0), 
@@ -126,7 +166,7 @@ class _ViewTask extends State<ViewTask> {
                     SizedBox(height: 10.0),
                     Text(
                       widget.task['reminder'],
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 20),
                     ),
               
                     SizedBox(height: 20.0), 
@@ -170,7 +210,7 @@ class _ViewTask extends State<ViewTask> {
                     SizedBox(height: 10.0), 
                     Text(
                       widget.task['description'],
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 20),
                     ),
                 
                   ],
@@ -184,7 +224,37 @@ class _ViewTask extends State<ViewTask> {
                     SmallButton(
                       height: 50, 
                       width: 50,
-                      image: 'assets/icons/trash_icon.png'
+                      image: 'assets/icons/trash_icon.png',
+                      press: () {
+                        createAlertDialog(context).then((onValue) async {
+                          if (onValue == 'Yes'){
+                            try {
+                              await db.deleteTask(widget.task['id']);
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Display(),
+                                ),
+                                (route) => false,
+                              );
+                            }
+                            catch(err) {
+                              print(err.toString());
+                              final snackBar = SnackBar(
+                                content: Text(err.toString()),
+                                action: SnackBarAction(
+                                  label: 'CLOSE',
+                                  onPressed: () {
+                          
+                                  },
+                                ),
+                              );
+
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            }
+                          }
+                        });
+                      }
                     ), 
                     SizedBox(width: 20),
                     _loading ? CircularProgressIndicator() :
@@ -192,44 +262,15 @@ class _ViewTask extends State<ViewTask> {
                       height: 50, 
                       width: 50,
                       image: 'assets/icons/save_icon.png',
-                      // press: () async {
-                      //   if(addTaskFormKey.currentState.validate()) {
-                      //     try {
-                      //       String title = _tasktitleController.text;
-                      //       String description = _notesController.text;
-                      //       DateTime startDate = DateTime.now();
-                      //       DateTime dueDate = selectedDate;
-                      //       var reminder = _reminder;
-
-                      //       setState(() { _loading = true; });
-
-                      //       await db.createTask(title, description, startDate, dueDate, categories, reminder);
-
-                      //       setState(() { _loading = false; });
-
-                      //       Navigator.pushAndRemoveUntil(
-                      //         context,
-                      //         MaterialPageRoute(
-                      //           builder: (context) => Home(),
-                      //         ),
-                      //         (route) => false,
-                      //       );
-                      //     }
-                      //     catch(err) {
-                      //       final snackBar = SnackBar(
-                      //           content: Text(err),
-                      //           action: SnackBarAction(
-                      //             label: 'CLOSE',
-                      //             onPressed: () {
-                          
-                      //             },
-                      //           ),
-                      //         );
-
-                      //         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      //     }
-                      //   }
-                      // },
+                      press: () async {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditTask(task: widget.task),
+                          ),
+                          (route) => false,
+                        );
+                      },
                     ),  
                   ],
                 )
