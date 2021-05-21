@@ -225,11 +225,33 @@ class _ViewTask extends State<ViewTask> {
                       height: 50, 
                       width: 50,
                       image: 'assets/icons/trash_icon.png',
-                      press: () async {
-                        createAlertDialog(context).then((onValue){
+                      press: () {
+                        createAlertDialog(context).then((onValue) async {
                           if (onValue == 'Yes'){
-                            // add delete task here
-                            // task = widget.task 
+                            try {
+                              await db.deleteTask(widget.task['id']);
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Display(),
+                                ),
+                                (route) => false,
+                              );
+                            }
+                            catch(err) {
+                              print(err.toString());
+                              final snackBar = SnackBar(
+                                content: Text(err.toString()),
+                                action: SnackBarAction(
+                                  label: 'CLOSE',
+                                  onPressed: () {
+                          
+                                  },
+                                ),
+                              );
+
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            }
                           }
                         });
                       }
