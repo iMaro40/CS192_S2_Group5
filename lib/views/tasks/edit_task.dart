@@ -71,6 +71,8 @@ class _EditTask extends State<EditTask> {
     );
   }
 
+  var start = 0;
+
   @override
   Widget build(BuildContext context) {
     var rawReminders = [
@@ -79,14 +81,17 @@ class _EditTask extends State<EditTask> {
       "1 day before", 
       "2 days before"
     ]; 
+    if (start == 0){
+      _tasktitleController.text =  widget.task['title'];
+      _notesController.text =  widget.task['description'];
+      DateTime picked = widget.task['startDate'].toDate();
+      var date = "${picked.toLocal().day}/${picked.toLocal().month}/${picked.toLocal().year}";
+      _dateController.text = date;
+      _reminder = widget.task['reminder'];
 
-    _tasktitleController.text =  widget.task['title'];
-    _notesController.text =  widget.task['description'];
-    DateTime picked = widget.task['startDate'].toDate();
-    var date = "${picked.toLocal().day}/${picked.toLocal().month}/${picked.toLocal().year}";
-    _dateController.text = date;
-
-    categories = (widget.task['categories'] as List).map((item) => item as String?).toList();
+      categories = (widget.task['categories'] as List).map((item) => item as String?).toList();
+      start = 1;
+    }
 
     var reminder = rawReminders.map((element) {
       return DropdownMenuItem(
@@ -144,7 +149,7 @@ class _EditTask extends State<EditTask> {
                             return 'Please enter a title.';
                           }
                           return null;
-                      }
+                      },
                     ),
                     SizedBox(height: 10.0), 
                     GestureDetector(
@@ -189,7 +194,7 @@ class _EditTask extends State<EditTask> {
                     ),
                     Container(
                       child: DropdownButton(
-                        value: widget.task['reminder'],
+                        value: _reminder,
                         style: const TextStyle(fontSize: 18, color: dark_grey),
                         underline: Container(
                           height: 1,
