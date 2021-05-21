@@ -3,7 +3,7 @@ import 'package:super_planner/components/small_button.dart';
 import 'package:super_planner/constants.dart';
 import 'package:super_planner/components/back_button.dart';
 import 'package:super_planner/services/db.dart';
-import 'package:super_planner/views/home.dart';
+import 'package:super_planner/screens/display.dart';
 import 'package:super_planner/views/tasks/view_task.dart';
 
 
@@ -301,14 +301,14 @@ class _EditTask extends State<EditTask> {
 
                             // change to edit task instead. 
                             // task = widget.task
-                            //await db.createTask(title, description, startDate, dueDate, categories, reminder);
+                            await db.editTask(widget.task['id'], title, description, startDate, dueDate, categories, reminder);
 
                             setState(() { _loading = false; });
 
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ViewTask(task: widget.task), // or maybe pass the new editted task here
+                                builder: (context) => Display(), 
                               ),
                               (route) => false,
                             );
