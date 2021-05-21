@@ -226,10 +226,16 @@ class _ViewTask extends State<ViewTask> {
                       width: 50,
                       image: 'assets/icons/trash_icon.png',
                       press: () async {
-                        createAlertDialog(context).then((onValue){
+                        createAlertDialog(context).then((onValue) async {
                           if (onValue == 'Yes'){
-                            // add delete task here
-                            // task = widget.task 
+                            await db.deleteTask(widget.task['id']);
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Home(),
+                              ),
+                              (route) => false,
+                            );
                           }
                         });
                       }

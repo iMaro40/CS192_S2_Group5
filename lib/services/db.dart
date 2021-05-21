@@ -36,6 +36,10 @@ class DBService {
     });
   }
 
+  Future deleteTask(String id) async {
+    return taskCollection.doc(id).delete();
+  }
+
   Future getEvents() async {
     var events = await eventCollection.where('email', isEqualTo: user!.email).get();
     var parsedEvents = events.docs.map( (event) {
