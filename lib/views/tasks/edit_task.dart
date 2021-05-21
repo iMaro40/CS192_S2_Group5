@@ -4,21 +4,26 @@ import 'package:super_planner/constants.dart';
 import 'package:super_planner/components/back_button.dart';
 import 'package:super_planner/services/db.dart';
 import 'package:super_planner/views/home.dart';
+import 'package:super_planner/views/tasks/view_task.dart';
 
-class AddTask extends StatefulWidget {
+
+class EditTask extends StatefulWidget {
+  final dynamic task;
+  const EditTask({Key? key,required this.task}) : super(key: key);
+
   @override
-  _AddTask createState() => _AddTask();
+  _EditTask createState() => _EditTask();
 }
 
 
-class _AddTask extends State<AddTask> {
-  final TextEditingController _tasktitleController = TextEditingController();
-  final TextEditingController _categoryController = TextEditingController();
-  final TextEditingController _notesController = TextEditingController();
-  final TextEditingController _dateController = TextEditingController();
+class _EditTask extends State<EditTask> {
+  TextEditingController _tasktitleController = TextEditingController();
+  TextEditingController _categoryController = TextEditingController();
+  TextEditingController _notesController = TextEditingController();
+  TextEditingController _dateController = TextEditingController();
   List<String?> categories = [];
 
-  final addTaskFormKey = GlobalKey<FormState>();
+  final editTaskFormKey = GlobalKey<FormState>();
 
   final DBService db = DBService();
 
@@ -30,7 +35,7 @@ class _AddTask extends State<AddTask> {
     _selectDate(BuildContext context) async {
       final DateTime? picked = await showDatePicker(
           context: context,
-          initialDate: selectedDate,
+          initialDate: widget.task['dueDate'].toDate(),
           firstDate: DateTime(2019, 8),
           lastDate: DateTime(2100));
       if (picked != null && picked != selectedDate)
@@ -75,6 +80,14 @@ class _AddTask extends State<AddTask> {
       "2 days before"
     ]; 
 
+    _tasktitleController.text =  widget.task['title'];
+    _notesController.text =  widget.task['description'];
+    DateTime picked = widget.task['startDate'].toDate();
+    var date = "${picked.toLocal().day}/${picked.toLocal().month}/${picked.toLocal().year}";
+    _dateController.text = date;
+
+    categories = (widget.task['categories'] as List).map((item) => item as String?).toList();
+
     var reminder = rawReminders.map((element) {
       return DropdownMenuItem(
         child: Text(element, style: TextStyle(fontSize: 16)),
@@ -86,13 +99,26 @@ class _AddTask extends State<AddTask> {
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         child: Form(
-          key: addTaskFormKey,
+          key: editTaskFormKey,
           child: Column(
             children: <Widget>[
-              SizedBox(height: 50.0),
+              SizedBox(height: 100.0),
               Align(
-                alignment: Alignment.topLeft,
-                child: ButtonBack(),
+                alignment: FractionalOffset(0.075,0.6),
+                child: SmallButton(
+                  height: 20, 
+                  width: 20,
+                  image: 'assets/icons/back_icon.png',
+                  press: () async {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ViewTask(task: widget.task), // or maybe pass the new editted task here
+                      ),
+                      (route) => false,
+                    );
+                  }
+                ),
               ),
               Padding (
                 padding: const EdgeInsets.all(50.0),
@@ -112,10 +138,6 @@ class _AddTask extends State<AddTask> {
                       style: TextStyle(
                         color: Colors.black, 
                         fontSize: 18
-                      ),
-                      decoration: const InputDecoration(
-                        hintText: 'Enter task title...',
-                        hintStyle: TextStyle(fontSize: 20), 
                       ),
                       validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -142,8 +164,6 @@ class _AddTask extends State<AddTask> {
                               fontSize: 22
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
-                            hintText: "Pick a date...",
-                            hintStyle: TextStyle(height: 2, fontSize: 18),
                             suffixIcon: Icon(
                               Icons.calendar_today,
                               color: dark_blue,
@@ -169,7 +189,7 @@ class _AddTask extends State<AddTask> {
                     ),
                     Container(
                       child: DropdownButton(
-                        value: _reminder,
+                        value: widget.task['reminder'],
                         style: const TextStyle(fontSize: 18, color: dark_grey),
                         underline: Container(
                           height: 1,
@@ -244,10 +264,6 @@ class _AddTask extends State<AddTask> {
                         color: Colors.black, 
                         fontSize: 18
                       ),
-                      decoration: const InputDecoration(
-                        hintText: 'Enter notes for your task...',
-                        hintStyle: TextStyle(fontSize: 16), 
-                      ),
                       onSaved: (String? value) {
                         // This optional block of code can be used to run
                         // code when the user saves the form.
@@ -261,19 +277,19 @@ class _AddTask extends State<AddTask> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    SmallButton(
-                      height: 50, 
-                      width: 50,
-                      image: 'assets/icons/trash_icon.png'
-                    ), 
-                    SizedBox(width: 20),
-                    _loading ? CircularProgressIndicator() :
+                    //SmallButton(
+                    //  height: 50, 
+                    //  width: 50,
+                    //  image: 'assets/icons/trash_icon.png'
+                    //), 
+                    //SizedBox(width: 20),
+                    //_loading ? CircularProgressIndicator() :
                     SmallButton(
                       height: 50, 
                       width: 50,
                       image: 'assets/icons/save_icon.png',
                       press: () async {
-                        if(addTaskFormKey.currentState!.validate()) {
+                        if(editTaskFormKey.currentState!.validate()) {
                           try {
                             String title = _tasktitleController.text;
                             String description = _notesController.text;
@@ -283,14 +299,16 @@ class _AddTask extends State<AddTask> {
 
                             setState(() { _loading = true; });
 
-                            await db.createTask(title, description, startDate, dueDate, categories, reminder);
+                            // change to edit task instead. 
+                            // task = widget.task
+                            //await db.createTask(title, description, startDate, dueDate, categories, reminder);
 
                             setState(() { _loading = false; });
 
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Home(),
+                                builder: (context) => ViewTask(task: widget.task), // or maybe pass the new editted task here
                               ),
                               (route) => false,
                             );
@@ -313,7 +331,7 @@ class _AddTask extends State<AddTask> {
                     ),  
                   ],
                 )
-              )
+              ),
             ],
           ),
         ),
