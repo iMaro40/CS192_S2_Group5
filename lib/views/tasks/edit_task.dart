@@ -17,7 +17,7 @@ class EditTask extends StatefulWidget {
 
 
 class _EditTask extends State<EditTask> {
-  TextEditingController _tasktitleController = TextEditingController();
+  TextEditingController _tasktitleController = new TextEditingController();
   TextEditingController _categoryController = TextEditingController();
   TextEditingController _notesController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
@@ -301,7 +301,7 @@ class _EditTask extends State<EditTask> {
 
                             // change to edit task instead. 
                             // task = widget.task
-                            //await db.createTask(title, description, startDate, dueDate, categories, reminder);
+                            await db.editTask(widget.task['id'], title, description, startDate, dueDate, categories, reminder);
 
                             setState(() { _loading = false; });
 
