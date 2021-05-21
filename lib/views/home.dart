@@ -278,7 +278,7 @@ class _HomeState extends State<Home> {
   String listTags(List<dynamic> categories) {
     List<String> list = [];
     if (categories.length == 0) return "";
-    for (String tag in categories as Iterable<String>) list.add(tag);
+    for (String tag in categories) list.add(tag);
     return list.join(', ');
   }
 }

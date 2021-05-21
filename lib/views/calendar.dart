@@ -83,15 +83,13 @@ class _Calendar extends State<Calendar> {
     final DBService db = DBService();
     
     return Scaffold(
-      appBar: AppBar(
-        title: Text('TableCalendar - Events'),
-      ),
       body: 
       FutureBuilder(
           future: db.getEvents(),
           builder: (context, snapshot) {
             return Column(
               children: [
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05), 
               TableCalendar<Event>(
                 firstDay: kFirstDay,
                 lastDay: kLastDay,
