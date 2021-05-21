@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:super_planner/constants.dart';
-import 'package:super_planner/views/home.dart';
+import 'package:super_planner/screens/display.dart';
 import 'package:super_planner/views/register.dart';
 import 'package:super_planner/services/auth.dart';
 class Login extends StatefulWidget {
@@ -146,7 +146,7 @@ class LoginState extends State<Login> {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Home(),
+                                builder: (context) => Display(),
                               ),
                               (route) => false,
                             );

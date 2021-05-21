@@ -3,7 +3,7 @@ import 'package:super_planner/components/small_button.dart';
 import 'package:super_planner/constants.dart';
 import 'package:super_planner/components/back_button.dart';
 import 'package:super_planner/services/db.dart';
-import 'package:super_planner/views/home.dart';
+import 'package:super_planner/screens/display.dart';
 
 class AddEvent extends StatefulWidget {
 
@@ -371,7 +371,7 @@ class _AddEvent extends State<AddEvent> {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Home(),
+                                builder: (context) => Display(),
                               ),
                               (route) => false,
                             );
