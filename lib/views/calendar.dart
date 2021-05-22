@@ -184,7 +184,7 @@ class _Calendar extends State<Calendar> {
                           child: ListTile(
                             onTap: () => print('${value[index]}'), //navigate to view event
                             title: Text('${value[index]}'),
-                            subtitle: Text('1:00 PM - 2:30PM'),
+                            // subtitle: Text('1:00 PM - 2:30PM'),
                           ),
                         );
                       },
