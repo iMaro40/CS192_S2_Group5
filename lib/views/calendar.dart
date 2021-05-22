@@ -98,12 +98,15 @@ class _Calendar extends State<Calendar> {
             List<Event> _getMyEvents(DateTime day) {
               // print(events);
               List <Event> result = [];
-              for(dynamic event in events) {
-                DateTime startTime = DateTime.parse(event['startTime'].toDate().toString());
-                if(DateOnlyCompare(day, startTime) == true) {
-                  result.add(Event(event['title']));
+              if(events != null) {
+                for(dynamic event in events) {
+                  DateTime startTime = DateTime.parse(event['startTime'].toDate().toString());
+                  if(DateOnlyCompare(day, startTime) == true) {
+                    result.add(Event(event['title']));
+                  }
                 }
               }
+              
               return result;
             }
             void _onMyDaySelected(DateTime selectedDay, DateTime focusedDay) {
