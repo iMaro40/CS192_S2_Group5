@@ -173,14 +173,6 @@ class _HomeState extends State<Home> {
                   return Container();
                 },
               ),
-              // DisplayTabs(
-              //   color: Colors.orange[100],
-              //   icon_color: Colors.orange,
-              //   time: '10:30 AM - 12:00PM',
-              //   event: 'CS 33 Data Structures',
-              //   tags: 'Lecture', 
-              //   notes: 'Mr Kevin Buno // Zoom'
-              // ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -278,7 +270,7 @@ class _HomeState extends State<Home> {
   String listTags(List<dynamic> categories) {
     List<String> list = [];
     if (categories.length == 0) return "";
-    for (String tag in categories as Iterable<String>) list.add(tag);
+    for (String tag in categories) list.add(tag);
     return list.join(', ');
   }
 }

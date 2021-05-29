@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:super_planner/views/calendar.dart';
+import 'package:super_planner/views/tasks.dart';
 import '../views/home.dart';
 import '../views/settings.dart';
 
 List<Widget> _widgetDisplay = <Widget>[
-   Home(),
-   Calendar(),
-   Center(
-     child: Text(
-       'PUT VIEW 3 HERE',
-       textAlign: TextAlign.center,
-     ),
-   ),
+  Home(),
+  Calendar(),
+  Tasks(),
   Settings(),
 ];
 
@@ -59,7 +55,7 @@ class _DisplayState extends State<Display> {
                   color: Colors.white,
                   size: 25.0,
             ),
-            label: 'Notifications',
+            label: 'Tasks',
             backgroundColor: Color(0xff40a8c4),
           ),
           BottomNavigationBarItem(

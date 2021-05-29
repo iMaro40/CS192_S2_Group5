@@ -11,6 +11,12 @@ const header_text = TextStyle(
   color: dark_blue
 );
 
+const subheader_text = TextStyle(
+  fontSize: 24, 
+  fontWeight: FontWeight.w600, 
+  color: Colors.black
+);
+
 const section_title_text = TextStyle(
   color: Colors.black,
   fontWeight: FontWeight.w700,
@@ -46,4 +52,10 @@ const field_title = TextStyle(
 const link_text = TextStyle(
   fontSize: 14, 
   color: dark_grey
+);
+
+const task_category_btn = TextStyle(
+  fontSize: 24, 
+  fontWeight: FontWeight.w600, 
+  color: Colors.white
 );
