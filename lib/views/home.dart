@@ -8,6 +8,7 @@ import 'package:super_planner/constants.dart';
 import 'package:super_planner/components/small_button.dart';
 import 'package:super_planner/views/calendar/add_event.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:super_planner/views/calendar/view_event.dart';
 import 'package:super_planner/views/tasks/add_task.dart';
 import 'package:super_planner/services/db.dart';
 import 'package:super_planner/views/tasks/view_task.dart';
@@ -156,13 +157,20 @@ class _HomeState extends State<Home> {
                       itemBuilder: (context, index) {
                         return Column(
                           children: [
-                            DisplayTabs(
-                              color: Colors.orange[100],
-                              icon_color: Colors.orange,
-                              time: showTime(events[index]['startTime'], events[index]['endTime']),
-                              event: events[index]['title'],
-                              tags: listTags(events[index]['categories']),
-                              notes: events[index]['notes'],
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context, MaterialPageRoute(builder: (context) => ViewEvent(event: events[index])) 
+                                );
+                              },                              
+                              child: DisplayTabs(
+                                color: Colors.orange[100],
+                                icon_color: Colors.orange,
+                                time: showTime(events[index]['startTime'], events[index]['endTime']),
+                                event: events[index]['title'],
+                                tags: listTags(events[index]['categories']),
+                                notes: events[index]['notes'],
+                              ),
                             ),
                           ],
                         );

@@ -3,8 +3,6 @@ import 'package:super_planner/components/small_button.dart';
 import 'package:super_planner/constants.dart';
 import 'package:super_planner/components/back_button.dart';
 import 'package:super_planner/services/db.dart';
-import 'package:super_planner/views/calendar/add_event.dart';
-import 'package:super_planner/views/home.dart';
 import 'package:intl/intl.dart';
 
 
@@ -30,7 +28,7 @@ class _ViewTask extends State<ViewTask> {
   final DBService db = DBService();
 
   bool _loading = false;
-  var formatter = new DateFormat('dd-MM-yyyy');
+  var formatter = new DateFormat.yMMMMd('en_US');
 
   DateTime selectedDate = DateTime.now();
   String _reminder = "1 day before";
@@ -101,7 +99,7 @@ class _ViewTask extends State<ViewTask> {
               
                     SizedBox(height: 20.0), 
                     Text(
-                      'Date',
+                      'DATE',
                       style: TextStyle(
                         color: dark_blue, 
                         fontSize: 16, 
@@ -187,50 +185,50 @@ class _ViewTask extends State<ViewTask> {
                       image: 'assets/icons/trash_icon.png'
                     ), 
                     SizedBox(width: 20),
-                    _loading ? CircularProgressIndicator() :
-                    SmallButton(
-                      height: 50, 
-                      width: 50,
-                      image: 'assets/icons/save_icon.png',
-                      // press: () async {
-                      //   if(addTaskFormKey.currentState.validate()) {
-                      //     try {
-                      //       String title = _tasktitleController.text;
-                      //       String description = _notesController.text;
-                      //       DateTime startDate = DateTime.now();
-                      //       DateTime dueDate = selectedDate;
-                      //       var reminder = _reminder;
+                    // _loading ? CircularProgressIndicator() :
+                    // SmallButton(
+                    //   height: 50, 
+                    //   width: 50,
+                    //   image: 'assets/icons/save_icon.png',
+                    //   // press: () async {
+                    //   //   if(addTaskFormKey.currentState.validate()) {
+                    //   //     try {
+                    //   //       String title = _tasktitleController.text;
+                    //   //       String description = _notesController.text;
+                    //   //       DateTime startDate = DateTime.now();
+                    //   //       DateTime dueDate = selectedDate;
+                    //   //       var reminder = _reminder;
 
-                      //       setState(() { _loading = true; });
+                    //   //       setState(() { _loading = true; });
 
-                      //       await db.createTask(title, description, startDate, dueDate, categories, reminder);
+                    //   //       await db.createTask(title, description, startDate, dueDate, categories, reminder);
 
-                      //       setState(() { _loading = false; });
+                    //   //       setState(() { _loading = false; });
 
-                      //       Navigator.pushAndRemoveUntil(
-                      //         context,
-                      //         MaterialPageRoute(
-                      //           builder: (context) => Home(),
-                      //         ),
-                      //         (route) => false,
-                      //       );
-                      //     }
-                      //     catch(err) {
-                      //       final snackBar = SnackBar(
-                      //           content: Text(err),
-                      //           action: SnackBarAction(
-                      //             label: 'CLOSE',
-                      //             onPressed: () {
+                    //   //       Navigator.pushAndRemoveUntil(
+                    //   //         context,
+                    //   //         MaterialPageRoute(
+                    //   //           builder: (context) => Home(),
+                    //   //         ),
+                    //   //         (route) => false,
+                    //   //       );
+                    //   //     }
+                    //   //     catch(err) {
+                    //   //       final snackBar = SnackBar(
+                    //   //           content: Text(err),
+                    //   //           action: SnackBarAction(
+                    //   //             label: 'CLOSE',
+                    //   //             onPressed: () {
                           
-                      //             },
-                      //           ),
-                      //         );
+                    //   //             },
+                    //   //           ),
+                    //   //         );
 
-                      //         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      //     }
-                      //   }
-                      // },
-                    ),  
+                    //   //         ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    //   //     }
+                    //   //   }
+                    //   // },
+                    // ),  
                   ],
                 )
               )
