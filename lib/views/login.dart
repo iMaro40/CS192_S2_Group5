@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:super_planner/constants.dart';
-import 'package:super_planner/views/home.dart';
+import 'package:super_planner/screens/wrapper.dart';
 import 'package:super_planner/views/register.dart';
 import 'package:super_planner/services/auth.dart';
 class Login extends StatefulWidget {
@@ -146,7 +146,7 @@ class LoginState extends State<Login> {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Home(),
+                                builder: (context) => Wrapper(),
                               ),
                               (route) => false,
                             );
@@ -157,7 +157,8 @@ class LoginState extends State<Login> {
                             // setState(() { _loading = false; });
                             String errorMsg = '';
                             dynamic error = err;
-                            switch(error.code) {
+                            dynamic code = error.code? error.code : null;
+                            switch(code) {
                               case 'wrong-password': 
                                 errorMsg = 'ERROR: Wrong password!'; 
                                 break;
