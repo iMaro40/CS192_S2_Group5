@@ -182,11 +182,56 @@ class ChangeNameState extends State<ChangeName> {
                                 width: 50,
                                 image: 'assets/icons/save_icon.png',
                                 press: () async {
-                                  // change name and check if password is correct
-                                  //if(.currentState!.validate()) {
-                                  //  try {
-                                  //    
-                                  //  }
+                                  var email = user!.email;
+                                  AuthCredential credential = EmailAuthProvider.credential(email: email!, password: passwordController.text);
+
+                                  try {
+                                    await user.reauthenticateWithCredential(credential);
+                                    await user.updateProfile(displayName: nameController.text);
+                                    
+                                    final snackBar = SnackBar(
+                                      content: Text("You have successfully changed your display name."),
+                                      action: SnackBarAction(
+                                        label: 'CLOSE',
+                                        onPressed: () {
+                                
+                                        },
+                                      ),
+                                    );
+
+                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                  }
+                                  catch(err) {
+                                    // setState(() { _loading = false; });
+                                    String errorMsg = '';
+                                    dynamic error = err;
+                                    dynamic code = error.code != null? error.code : null;
+                                    switch(code) {
+                                      case 'wrong-password': 
+                                        errorMsg = 'ERROR: Wrong password!'; 
+                                        break;
+                                      
+                                      case 'too-many-requests':
+                                        errorMsg = 'ERROR: Too many attempts. Please try again later';
+                                        break;
+                                        
+                                      default:
+                                        // errorMsg = err.code;
+                                        errorMsg = 'ERROR: Some error occured while trying to change display name.';
+                                    }
+
+                                    final snackBar = SnackBar(
+                                      content: Text(errorMsg),
+                                      action: SnackBarAction(
+                                        label: 'CLOSE',
+                                        onPressed: () {
+                                
+                                        },
+                                      ),
+                                    );
+
+                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                  }
                                 },
                               ),  
                             ],
