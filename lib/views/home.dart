@@ -25,6 +25,10 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+
+    DateTime now = new DateTime.now();  
+    DateTime today = new DateTime(now.year, now.month, now.day);
+    print(today);
     
     var user = FirebaseAuth.instance.currentUser;
     String? _displayName = 'User';
@@ -144,7 +148,6 @@ class _HomeState extends State<Home> {
                   )
                 ],
               ),
-              //SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               FutureBuilder(
                 future: db.getEvents(),
                 builder: (context, snapshot) {
@@ -155,25 +158,33 @@ class _HomeState extends State<Home> {
                       shrinkWrap: true,
                       itemCount: events != null ? events.length : 0,
                       itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context, MaterialPageRoute(builder: (context) => ViewEvent(event: events[index])) 
-                                );
-                              },                              
-                              child: DisplayTabs(
-                                color: Colors.orange[100],
-                                icon_color: Colors.orange,
-                                time: showTime(events[index]['startTime'], events[index]['endTime']),
-                                event: events[index]['title'],
-                                tags: listTags(events[index]['categories']),
-                                notes: events[index]['notes'],
+                        if (DateFormat.yMd().format(events[index]['startTime'].toDate()) == DateFormat.yMd().format(today)){
+                          return Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context, MaterialPageRoute(builder: (context) => ViewEvent(event: events[index])) 
+                                  );
+                                },                              
+                                child: DisplayTabs(
+                                  color: Colors.orange[100],
+                                  icon_color: Colors.orange,
+                                  time: showTime(events[index]['startTime'], events[index]['endTime']),
+                                  event: events[index]['title'],
+                                  tags: listTags(events[index]['categories']),
+                                  notes: events[index]['notes'],
+                                ),
                               ),
-                            ),
-                          ],
-                        );
+                            ],
+                          );
+                        } else {
+                          print('today');
+                          print(today);
+                          print('timestamp');
+                          print(events[index]['startTime'].toDate());
+                          return Container();
+                        }
                       },
                     );
                   }
