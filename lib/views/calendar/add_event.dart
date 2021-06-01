@@ -371,7 +371,7 @@ class _AddEvent extends State<AddEvent> {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Display(),
+                                builder: (context) => Display(tab: 0),
                               ),
                               (route) => false,
                             );
@@ -394,7 +394,8 @@ class _AddEvent extends State<AddEvent> {
                     ),  
                   ],
                 )
-              )
+              ),
+              SizedBox(height: 50.0), 
             ],
           ),
         ),

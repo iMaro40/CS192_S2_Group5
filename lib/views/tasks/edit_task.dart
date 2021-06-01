@@ -107,22 +107,31 @@ class _EditTask extends State<EditTask> {
           key: editTaskFormKey,
           child: Column(
             children: <Widget>[
-              SizedBox(height: 100.0),
+              SizedBox(height: 50.0),
               Align(
-                alignment: FractionalOffset(0.075,0.6),
-                child: SmallButton(
-                  height: 20, 
-                  width: 20,
-                  image: 'assets/icons/back_icon.png',
-                  press: () async {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ViewTask(task: widget.task), // or maybe pass the new editted task here
-                      ),
-                      (route) => false,
-                    );
-                  }
+                alignment: Alignment.topLeft,
+                child: Container(
+                  height: 70, 
+                  width: 90, 
+                  decoration: BoxDecoration(
+                    color: faded_light_blue, 
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(10.0), 
+                      bottomRight: Radius.circular(10.0)
+                    ),
+                  ),
+                  child: IconButton(
+                    icon: new Icon(Icons.arrow_back_ios, size: 20.0),
+                    onPressed: () async {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ViewTask(task: widget.task),
+                        ),
+                        (route) => false,
+                      );
+                    }
+                  )
                 ),
               ),
               Padding (
@@ -313,7 +322,7 @@ class _EditTask extends State<EditTask> {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Display(), 
+                                builder: (context) => Display(tab: 0), 
                               ),
                               (route) => false,
                             );

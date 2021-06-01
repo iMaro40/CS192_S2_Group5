@@ -146,7 +146,7 @@ class LoginState extends State<Login> {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Display(),
+                                builder: (context) => Display(tab: 0),
                               ),
                               (route) => false,
                             );

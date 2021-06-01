@@ -13,7 +13,7 @@ class Wrapper extends StatelessWidget {
           return Login();
         }
         else {
-          return Display();
+          return Display(tab: 0);
         }
       }
     );
