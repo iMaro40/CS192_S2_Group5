@@ -35,3 +35,39 @@ class QuoteTab extends StatelessWidget {
     ); 
   }
 }
+
+class EmptyTab extends StatelessWidget {
+  final Color? color; 
+  final String? text;  
+
+  const EmptyTab({
+    Key? key,
+    this.color, 
+    this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+  return Container(
+      padding: const EdgeInsets.all(30.0),
+      decoration: new BoxDecoration(
+        color: color,
+        borderRadius: new BorderRadius.all(
+          Radius.circular(20.0)
+        )
+      ),                
+      alignment: Alignment.topLeft,
+      child: Column(
+        children: [
+          Text(
+            text!, 
+            style: TextStyle(
+              fontStyle: FontStyle.italic, 
+              fontSize: 18
+            ), 
+          )
+        ],
+      )
+    ); 
+  }
+}
