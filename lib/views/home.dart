@@ -208,56 +208,6 @@ class _HomeState extends State<Home> {
                 tags: 'Meeting', 
                 notes: 'CS 192 Group 2 Teammates // Discord'
               ),                   
-              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text( 
-                    'My Tasks', 
-                    style: section_title_text
-                  ),
-                  SmallButton(
-                    height: 35, 
-                    width: 35,
-                    image: 'assets/images/add_btn.png',
-                    press:  () => Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => AddTask()),
-                    )
-                  )
-                ],
-              ),
-              FutureBuilder(
-                future: db.getTasks(),
-                builder: (context, snapshot) {
-                  if(snapshot.hasData) {
-                    dynamic tasks = snapshot.data;
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: tasks != null ? tasks.length : 0,
-                      itemBuilder: (context, index) {
-                        return 
-                          Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context, MaterialPageRoute(builder: (context) => ViewTask(task: tasks[index])) 
-                                  );
-                                },
-                                child: DisplayTask(
-                                  taskName: tasks[index]['title'],
-                                ),
-                              ),
-                              SizedBox(height: 5.0)
-                            ],
-                          );
-                        
-                      },
-                    );
-                  }
-                  return Container();
-                },
-              ),
             ],
           )
         ), 

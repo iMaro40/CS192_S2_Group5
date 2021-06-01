@@ -33,11 +33,18 @@ class DBService {
       'dueDate': dueDate,
       'categories': categories,
       'reminder': reminder,
+      'done': false,
     });
   }
 
   Future deleteTask(taskID) async {
     return taskCollection.doc(taskID).delete();
+  }
+
+  Future markTaskDone(taskID) async {
+    return taskCollection.doc(taskID).update({
+      'done': true
+    });
   }
 
   Future editTask(String taskID, String title, String description, DateTime startDate, DateTime dueDate, List<String?> categories, var reminder) async {

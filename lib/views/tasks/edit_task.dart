@@ -322,7 +322,7 @@ class _EditTask extends State<EditTask> {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Display(tab: 0), 
+                                builder: (context) => Display(tab: 2), 
                               ),
                               (route) => false,
                             );

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:super_planner/components/task_category.dart';
+import 'package:super_planner/components/display_task.dart';
 import 'package:super_planner/constants.dart';
 import 'package:super_planner/services/db.dart';
-import 'package:intl/intl.dart';
 import 'package:super_planner/views/tasks/add_task.dart';
-
+import 'package:super_planner/views/tasks/view_task.dart';
 
 class Tasks extends StatefulWidget {
   @override
@@ -20,27 +19,40 @@ class _Tasks extends State<Tasks> {
 
   final DBService db = DBService();
   dynamic tasks = [];
+  dynamic allNotDone = [];
+  dynamic allDone = [];
   dynamic toDisplay = [];
 
   void initState(){
       super.initState();
       
-      //add 'All' to display all tasks
+      //add 'All' to display all not done tasks
       categoriesSet.add('All');
 
       db.getTasks().then((tasksData) {
         setState(() {
           tasks = tasksData;
-          toDisplay = tasks;
+          
           for(dynamic task in tasks) {
-            for(dynamic category in task['categories']) {
-              categoriesSet.add(category);
+            if(task['done']) {
+              allDone.add(task);
+            }
+            else {
+              for(dynamic category in task['categories']) {
+                categoriesSet.add(category);
+              }
+              allNotDone.add(task);
             }
           }
           
+          toDisplay = allNotDone;
           selectedCategory = categoriesSet.first.toString();
+          //add 'Completed Tasks' to display done tasks
+          categoriesSet.add('Completed Tasks');
         });
       });
+
+      
   }
 
   @override
@@ -72,12 +84,15 @@ class _Tasks extends State<Tasks> {
                           setState(() {
                             selectedCategory = newValue!;
                             if(selectedCategory == 'All') {
-                              toDisplay = tasks;
+                              toDisplay = allNotDone;
+                            }
+                            else if(selectedCategory == 'Completed Tasks') {
+                              toDisplay = allDone;
                             }
                             else {
                               toDisplay = [];
                               for(dynamic task in tasks) {
-                                if(task['categories'].contains(selectedCategory)) {
+                                if(task['categories'].contains(selectedCategory) && !task['done']) {
                                   toDisplay.add(task);
                                 }
                               }
@@ -88,16 +103,16 @@ class _Tasks extends State<Tasks> {
                     ],
                   )
               ), 
-              SizedBox(height: 50.0),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row( //Task category initials
-                  children: [
-                    TaskCategory(category_initial: 'A'), //fetch category initial
-                    TaskCategory(category_initial: 'W'),
-                  ],
-                ),
-              ), 
+              // SizedBox(height: 50.0),
+              // Padding(
+              //   padding: const EdgeInsets.all(10.0),
+              //   child: Row( //Task category initials
+              //     children: [
+              //       TaskCategory(category_initial: 'A'), //fetch category initial
+              //       TaskCategory(category_initial: 'W'),
+              //     ],
+              //   ),
+              // ), 
               Divider(
                 height: 20,
                 thickness: 2,
@@ -108,9 +123,18 @@ class _Tasks extends State<Tasks> {
                 shrinkWrap: true,
                 itemCount: toDisplay?.length,
                 itemBuilder: (context, index) {
-                  return Column(//DISPLAY TASKS HERE
+                  return Column(
                     children: [
-                      Text(toDisplay[index]['title']),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => ViewTask(task: tasks[index])) 
+                          );
+                        },
+                        child: DisplayTask(
+                          task: toDisplay[index],
+                        ),
+                      ),
                       SizedBox(height: 5.0)
                     ],
                   );
