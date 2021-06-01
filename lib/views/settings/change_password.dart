@@ -240,12 +240,53 @@ class ChangePasswordState extends State<ChangePassword> {
                                   width: 50,
                                   image: 'assets/icons/save_icon.png',
                                   press: () async {
-                                    // change name and check if password is correct
-                                    //if(.currentState!.validate()) {
-                                    //  try {
-                                    //    
-                                    //  }
-                                    // palagay na lang nung mga necessary backend stuff
+                                    var email = user!.email;
+                                    AuthCredential credential = EmailAuthProvider.credential(email: email!, password: oldPasswordController.text);
+                                    String displayMsg = '';
+
+                                    try {
+                                      await user.reauthenticateWithCredential(credential);
+
+                                      if (newPasswordController1.text == newPasswordController2.text) {
+                                        await user.updatePassword(newPasswordController1.text);
+                                        displayMsg = 'You have successfully changed your password.';
+                                      }
+                                      else
+                                        displayMsg = 'ERROR: New passwords do not match.';
+                                    }
+                                    catch(err) {
+                                      // setState(() { _loading = false; });
+                                      dynamic error = err;
+                                      dynamic code = error.code != null? error.code : null;
+                                      switch(code) {
+                                        case 'wrong-password': 
+                                          displayMsg = 'ERROR: Wrong password!'; 
+                                          break;
+                                        
+                                        case 'weak-password': 
+                                          displayMsg = 'ERROR: Weak password. Choose a stronger password.'; 
+                                          break;
+                                        
+                                        case 'too-many-requests':
+                                          displayMsg = 'ERROR: Too many attempts. Please try again later';
+                                          break;
+
+                                        default:
+                                          // errorMsg = err.code;
+                                          displayMsg = 'ERROR: Some error occured while trying to change password.';
+                                      }
+                                    }
+                                      final snackBar = SnackBar(
+                                        content: Text(displayMsg),
+                                        action: SnackBarAction(
+                                          label: 'CLOSE',
+                                          onPressed: () {
+                                  
+                                          },
+                                        ),
+                                      );
+
+                                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                   },
                                 ),  
                               ],
