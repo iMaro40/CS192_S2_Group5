@@ -3,8 +3,11 @@ import 'package:super_planner/components/small_button.dart';
 import 'package:super_planner/constants.dart';
 import 'package:super_planner/components/back_button.dart';
 import 'package:super_planner/services/db.dart';
+import 'package:super_planner/views/calendar/add_event.dart';
+import 'package:super_planner/views/home.dart';
+import 'package:super_planner/views/tasks/edit_task.dart';
 import 'package:intl/intl.dart';
-
+import 'package:super_planner/screens/display.dart';
 
 class ViewTask extends StatefulWidget {
   final dynamic task;
@@ -47,6 +50,32 @@ class _ViewTask extends State<ViewTask> {
           _dateController.text = date;
         });
     }
+  
+  Future<String?> createAlertDialog(BuildContext context){
+ 
+    return showDialog(context: context, builder: (context) {
+        return AlertDialog(
+          title: Text("Delete Task?"),
+          actions: <Widget>[
+            MaterialButton(
+              elevation: 5.0,
+              child: Text("Yes"),
+              onPressed: () {
+                Navigator.of(context).pop('Yes');
+              },
+            ),
+            MaterialButton(
+              elevation: 5.0,
+              child: Text("No"),
+              onPressed: () {
+                Navigator.of(context).pop('No');
+              },
+            )
+          ]
+        );
+      }
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,10 +101,32 @@ class _ViewTask extends State<ViewTask> {
           key: addTaskFormKey,
           child: Column(
             children: <Widget>[
-              SizedBox(height: 100.0),
+              SizedBox(height: 50.0),
               Align(
                 alignment: Alignment.topLeft,
-                child: ButtonBack(),
+                child: Container(
+                  height: 70, 
+                  width: 90, 
+                  decoration: BoxDecoration(
+                    color: faded_light_blue, 
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(10.0), 
+                      bottomRight: Radius.circular(10.0)
+                    ),
+                  ),
+                  child: IconButton(
+                    icon: new Icon(Icons.arrow_back_ios, size: 20.0),
+                    onPressed: () async {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Display(tab: 0),
+                        ),
+                        (route) => false,
+                      );
+                    }
+                  )
+                ),
               ),
               Padding (
                 padding: const EdgeInsets.all(50.0),
@@ -94,7 +145,7 @@ class _ViewTask extends State<ViewTask> {
                   // change
                     Text(
                       widget.task['title'],
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 20),
                     ),
               
                     SizedBox(height: 20.0), 
@@ -109,7 +160,7 @@ class _ViewTask extends State<ViewTask> {
                     SizedBox(height: 10.0), 
                     Text(
                       formatter.format(widget.task['dueDate'].toDate()),
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 20),
                     ),
                  
                     SizedBox(height: 20.0), 
@@ -124,7 +175,7 @@ class _ViewTask extends State<ViewTask> {
                     SizedBox(height: 10.0),
                     Text(
                       widget.task['reminder'],
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 20),
                     ),
               
                     SizedBox(height: 20.0), 
@@ -168,7 +219,7 @@ class _ViewTask extends State<ViewTask> {
                     SizedBox(height: 10.0), 
                     Text(
                       widget.task['description'],
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 20),
                     ),
                 
                   ],
@@ -182,53 +233,54 @@ class _ViewTask extends State<ViewTask> {
                     SmallButton(
                       height: 50, 
                       width: 50,
-                      image: 'assets/icons/trash_icon.png'
+                      image: 'assets/icons/trash_icon.png',
+                      press: () {
+                        createAlertDialog(context).then((onValue) async {
+                          if (onValue == 'Yes'){
+                            try {
+                              await db.deleteTask(widget.task['id']);
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Display(tab:0),
+                                ),
+                                (route) => false,
+                              );
+                            }
+                            catch(err) {
+                              print(err.toString());
+                              final snackBar = SnackBar(
+                                content: Text(err.toString()),
+                                action: SnackBarAction(
+                                  label: 'CLOSE',
+                                  onPressed: () {
+                          
+                                  },
+                                ),
+                              );
+
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            }
+                          }
+                        });
+                      }
                     ), 
                     SizedBox(width: 20),
-                    // _loading ? CircularProgressIndicator() :
-                    // SmallButton(
-                    //   height: 50, 
-                    //   width: 50,
-                    //   image: 'assets/icons/save_icon.png',
-                    //   // press: () async {
-                    //   //   if(addTaskFormKey.currentState.validate()) {
-                    //   //     try {
-                    //   //       String title = _tasktitleController.text;
-                    //   //       String description = _notesController.text;
-                    //   //       DateTime startDate = DateTime.now();
-                    //   //       DateTime dueDate = selectedDate;
-                    //   //       var reminder = _reminder;
-
-                    //   //       setState(() { _loading = true; });
-
-                    //   //       await db.createTask(title, description, startDate, dueDate, categories, reminder);
-
-                    //   //       setState(() { _loading = false; });
-
-                    //   //       Navigator.pushAndRemoveUntil(
-                    //   //         context,
-                    //   //         MaterialPageRoute(
-                    //   //           builder: (context) => Home(),
-                    //   //         ),
-                    //   //         (route) => false,
-                    //   //       );
-                    //   //     }
-                    //   //     catch(err) {
-                    //   //       final snackBar = SnackBar(
-                    //   //           content: Text(err),
-                    //   //           action: SnackBarAction(
-                    //   //             label: 'CLOSE',
-                    //   //             onPressed: () {
-                          
-                    //   //             },
-                    //   //           ),
-                    //   //         );
-
-                    //   //         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    //   //     }
-                    //   //   }
-                    //   // },
-                    // ),  
+                    _loading ? CircularProgressIndicator() :
+                    SmallButton(
+                      height: 50, 
+                      width: 50,
+                      image: 'assets/icons/save_icon.png',
+                      press: () async {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditTask(task: widget.task),
+                          ),
+                          (route) => false,
+                        );
+                      },
+                    ),  
                   ],
                 )
               )

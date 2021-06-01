@@ -89,7 +89,7 @@ class _AddTask extends State<AddTask> {
           key: addTaskFormKey,
           child: Column(
             children: <Widget>[
-              SizedBox(height: 100.0),
+              SizedBox(height: 50.0),
               Align(
                 alignment: Alignment.topLeft,
                 child: ButtonBack(),
@@ -111,7 +111,7 @@ class _AddTask extends State<AddTask> {
                       controller: _tasktitleController,
                       style: TextStyle(
                         color: Colors.black, 
-                        fontSize: 24
+                        fontSize: 18
                       ),
                       decoration: const InputDecoration(
                         hintText: 'Enter task title...',
@@ -214,10 +214,6 @@ class _AddTask extends State<AddTask> {
                     Container(
                       width: MediaQuery.of(context).size.width,
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-                      // decoration: BoxDecoration(
-                      //   border: Border.all(color: Colors.black26),
-                      //   borderRadius: BorderRadius.circular(14),
-                      // ),
                       child: categories.length == 0
                           ? SizedBox(height: 0.0)
                           : Wrap(
@@ -261,7 +257,7 @@ class _AddTask extends State<AddTask> {
                 )
               ),
               Padding(
-                padding: const EdgeInsets.only(top:20.0, right:50.0),
+                padding: const EdgeInsets.only(top:10.0, right:50.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -294,7 +290,7 @@ class _AddTask extends State<AddTask> {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Display(),
+                                builder: (context) => Display(tab: 0),
                               ),
                               (route) => false,
                             );

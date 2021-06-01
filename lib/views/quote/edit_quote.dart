@@ -95,7 +95,7 @@ class _EditQuote extends State<EditQuote> {
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Display(),
+                            builder: (context) => Display(tab: 0),
                           ),
                           (route) => false,
                         );

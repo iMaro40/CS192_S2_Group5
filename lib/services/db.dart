@@ -36,6 +36,21 @@ class DBService {
     });
   }
 
+  Future deleteTask(taskID) async {
+    return taskCollection.doc(taskID).delete();
+  }
+
+  Future editTask(String taskID, String title, String description, DateTime startDate, DateTime dueDate, List<String?> categories, var reminder) async {
+    return taskCollection.doc(taskID).update({
+      'title': title,
+      'description': description,
+      'startDate': startDate,
+      'dueDate': dueDate,
+      'categories': categories,
+      'reminder': reminder,
+    });
+  }
+
   Future getEvents() async {
     var events = await eventCollection.where('email', isEqualTo: user!.email).get();
     var parsedEvents = events.docs.map( (event) {
