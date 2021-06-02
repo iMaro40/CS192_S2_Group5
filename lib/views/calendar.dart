@@ -42,7 +42,7 @@ class _Calendar extends State<Calendar> {
   List<Event> _getEventsForDay(DateTime day) {
     // Implementation example
     print(day);
-    return kEvents[day] ?? [];
+    return [];
   }
 
   List<Event> _getEventsForRange(DateTime start, DateTime end) {
@@ -52,20 +52,6 @@ class _Calendar extends State<Calendar> {
     return [
       for (final d in days) ..._getEventsForDay(d),
     ];
-  }
-
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    if (!isSameDay(_selectedDay, selectedDay)) {
-      setState(() {
-        _selectedDay = selectedDay;
-        _focusedDay = focusedDay;
-        _rangeStart = null; // Important to clean those
-        _rangeEnd = null;
-        _rangeSelectionMode = RangeSelectionMode.toggledOff;
-      });
-
-      _selectedEvents.value = _getEventsForDay(selectedDay);
-    }
   }
 
   void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
@@ -188,7 +174,12 @@ class _Calendar extends State<Calendar> {
                             ]
                           ),
                           child: ListTile(
-                            onTap: () => print('${value[index]}'), //navigate to view event
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ViewEvent(event: events[index])));
+                            },
                             title: Text('${value[index]}'),
                             // subtitle: Text('1:00 PM - 2:30PM'),
                           ),
