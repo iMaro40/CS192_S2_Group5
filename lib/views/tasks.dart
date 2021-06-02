@@ -66,55 +66,65 @@ class _Tasks extends State<Tasks> {
             children: <Widget>[
               SizedBox(height: 80.0),
               Align(
-                alignment: Alignment.topLeft,
-                child:
-                  Column(
-                    children: [
-                      Text('MY TASKS', style: header_text), 
-                      DropdownButton(
-                        value: selectedCategory,
-                        items: categoriesSet.toList()
-                            .map<DropdownMenuItem<String>>((value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            selectedCategory = newValue!;
-                            if(selectedCategory == 'All') {
-                              toDisplay = allNotDone;
-                            }
-                            else if(selectedCategory == 'Completed Tasks') {
-                              toDisplay = allDone;
-                            }
-                            else {
-                              toDisplay = [];
-                              for(dynamic task in tasks) {
-                                if(task['categories'].contains(selectedCategory) && !task['done']) {
-                                  toDisplay.add(task);
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'MY TASKS', style: header_text, textAlign: TextAlign.left)
+              ),
+              SizedBox(height: 20),
+              Column(
+                children: [
+                  SizedBox(height: 30),
+                  Container(
+                    margin: new EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(
+                          color: Colors.grey, style: BorderStyle.solid, width: 0.5),
+                    ),                     
+                    child: Padding(
+                      padding: const EdgeInsets.only(left:20.0, right: 20.0),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton(                            
+                          isExpanded: true,
+                          elevation: 0,
+                          hint: new Text("Pick a cateogry"),
+                          value: selectedCategory,
+                          style: const TextStyle(color: dark_blue, fontSize: 16),
+                          items: categoriesSet.toList()
+                              .map<DropdownMenuItem<String>>((value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedCategory = newValue!;
+                              if(selectedCategory == 'All') {
+                                toDisplay = allNotDone;
+                              }
+                              else if(selectedCategory == 'Completed Tasks') {
+                                toDisplay = allDone;
+                              }
+                              else {
+                                toDisplay = [];
+                                for(dynamic task in tasks) {
+                                  if(task['categories'].contains(selectedCategory) && !task['done']) {
+                                    toDisplay.add(task);
+                                  }
                                 }
                               }
-                            }
-                          });
-                        },
-                      )
-                    ],
+                            });
+                          },
+                        ),
+                      ),
+                    ),
                   )
+                ],
               ), 
-              // SizedBox(height: 50.0),
-              // Padding(
-              //   padding: const EdgeInsets.all(10.0),
-              //   child: Row( //Task category initials
-              //     children: [
-              //       TaskCategory(category_initial: 'A'), //fetch category initial
-              //       TaskCategory(category_initial: 'W'),
-              //     ],
-              //   ),
-              // ), 
               Divider(
-                height: 20,
+                height: 50,
                 thickness: 2,
                 indent: 20,
                 endIndent: 20,
