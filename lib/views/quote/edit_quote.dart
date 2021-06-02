@@ -76,12 +76,7 @@ class _EditQuote extends State<EditQuote> {
                 padding: const EdgeInsets.only(top:20.0, right:50.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SmallButton(
-                      height: 50, 
-                      width: 50,
-                      image: 'assets/icons/trash_icon.png'
-                    ), 
+                  children: [ 
                     SizedBox(width: 20),
                     _loading ? CircularProgressIndicator() :
                     SmallButton(

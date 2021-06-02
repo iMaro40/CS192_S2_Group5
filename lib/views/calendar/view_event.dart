@@ -259,7 +259,8 @@ class _ViewEvent extends State<ViewEvent> {
                         });
                       }
                     ), 
-                    SizedBox(width: 20),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+                    // SizedBox(width: 20),
                     // _loading ? CircularProgressIndicator() :
                     // SmallButton(
                     //   height: 50, 
