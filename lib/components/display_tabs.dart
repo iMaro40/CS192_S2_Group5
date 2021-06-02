@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:super_planner/constants.dart';
 
-class DisplayTabs extends StatelessWidget {
+ class DisplayTabs extends StatefulWidget {
   final Color? color;
   final Color? icon_color;
   final String? time;
@@ -23,13 +23,32 @@ class DisplayTabs extends StatelessWidget {
     this.press,
   }) : super(key: key);
 
+    @override
+    _DisplayTabs createState() {
+      return _DisplayTabs();
+    }
+  }
+
+class _DisplayTabs extends State<DisplayTabs> {
+
+  bool _isVisible = false;
+
+  void initState() {
+    super.initState();
+
+    setState(() {
+      if (widget.notes != null)
+       _isVisible = !_isVisible;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
   return Container(
       margin: const EdgeInsets.only(bottom: 5.0),
       padding: const EdgeInsets.all(30.0),
       decoration: new BoxDecoration(
-        color: color,
+        color: widget.color,
         borderRadius: new BorderRadius.all(
           Radius.circular(20.0)
         )
@@ -41,12 +60,12 @@ class DisplayTabs extends StatelessWidget {
             children: [
               Icon(
                 Icons.schedule,
-                color: icon_color,
+                color: widget.icon_color,
                 size: 20.0,
               ),
               SizedBox(width: MediaQuery.of(context).size.width * 0.01),
               Text( 
-                time!, 
+                widget.time!, 
                 style: time_tabs_text
               ),                      
             ],
@@ -56,11 +75,10 @@ class DisplayTabs extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text( 
-                event!, 
+                widget.event!, 
                 style: title_tabs_text
               ),    
               Container(
-                // width: 0,
                 height: 30,
                 padding: const EdgeInsets.only(top:5, left:10.0, right: 10.0),
                 decoration: new BoxDecoration(
@@ -69,18 +87,21 @@ class DisplayTabs extends StatelessWidget {
                     Radius.circular(20.0)
                   )
                 ),
-                child: Text(tags!)  
+                child: Text(widget.tags!)  
               ),                                         
             ],
           ),  
           SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-          Row(
-            children: [
-              Text( 
-                notes!, 
-                style: notes_tabs_text
-              )                    
-            ],
+          Visibility(
+            visible: _isVisible,
+            child: Row(
+              children: [
+                Text( 
+                  widget.notes!, 
+                  style: notes_tabs_text
+                ) 
+              ],
+            ),
           )
         ],
       )

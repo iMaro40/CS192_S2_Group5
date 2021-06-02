@@ -290,7 +290,7 @@ class _AddTask extends State<AddTask> {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Display(),
+                                builder: (context) => Display(tab: 2),
                               ),
                               (route) => false,
                             );

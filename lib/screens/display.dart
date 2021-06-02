@@ -1,29 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:super_planner/views/calendar.dart';
+import 'package:super_planner/views/tasks.dart';
 import '../views/home.dart';
 import '../views/settings.dart';
 
 List<Widget> _widgetDisplay = <Widget>[
-   Home(),
-   Calendar(),
-   Center(
-     child: Text(
-       'PUT VIEW 3 HERE',
-       textAlign: TextAlign.center,
-     ),
-   ),
+  Home(),
+  Calendar(),
+  Tasks(),
   Settings(),
 ];
 
 class Display extends StatefulWidget {
+  final int tab;
+  const Display({Key? key,required this.tab}) : super(key: key);
+
   @override
   _DisplayState createState() => _DisplayState();
 }
 class _DisplayState extends State<Display> {
   int currentTab = 0;
+  var start = 0;
   
   @override
   Widget build(BuildContext context) {
+    if (start == 0){
+      currentTab = widget.tab;
+      start = 1;
+    }
+    
     return Scaffold(
       body: _widgetDisplay[currentTab],
       bottomNavigationBar: BottomNavigationBar(
@@ -59,7 +64,7 @@ class _DisplayState extends State<Display> {
                   color: Colors.white,
                   size: 25.0,
             ),
-            label: 'Notifications',
+            label: 'Tasks',
             backgroundColor: Color(0xff40a8c4),
           ),
           BottomNavigationBarItem(

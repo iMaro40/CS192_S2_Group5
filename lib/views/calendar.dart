@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:super_planner/views/calendar/add_event.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:super_planner/utils/calendar.dart';
 import 'package:super_planner/services/db.dart';
+import 'package:super_planner/constants.dart';
+import 'package:super_planner/views/calendar/view_event.dart';
 
 bool DateOnlyCompare (a,b) {
   return a.year == b.year && a.month == b.month
@@ -198,7 +201,17 @@ class _Calendar extends State<Calendar> {
             ],
           );
         },
-      )
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddEvent(defaultCategories: [],)),
+          );
+        },
+        child: const Icon(Icons.add),
+        backgroundColor: dark_blue
+      ),
     );
   }
 }

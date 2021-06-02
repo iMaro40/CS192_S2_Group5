@@ -146,7 +146,7 @@ class LoginState extends State<Login> {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Display(),
+                                builder: (context) => Display(tab: 0),
                               ),
                               (route) => false,
                             );
@@ -157,7 +157,7 @@ class LoginState extends State<Login> {
                             // setState(() { _loading = false; });
                             String errorMsg = '';
                             dynamic error = err;
-                            dynamic code = error.code != null? error.code : null;
+                            dynamic code = error.code? error.code : null;
                             switch(code) {
                               case 'wrong-password': 
                                 errorMsg = 'ERROR: Wrong password!'; 

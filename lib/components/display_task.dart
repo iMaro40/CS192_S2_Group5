@@ -1,47 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:super_planner/constants.dart';
-
-class LabeledCheckbox extends StatelessWidget {
-  const LabeledCheckbox({
-    Key? key,
-    this.label,
-    this.padding,
-    this.value,
-    //this.onChanged,
-  }) : super(key: key);
-
-  final String? label;
-  final EdgeInsets? padding;
-  final bool? value;
-  //final Function onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      // onTap: () {
-      //   //onChanged(!value);
-      // },
-      child: Padding(
-        padding: padding!,
-        child: Row(
-          children: <Widget>[
-            Expanded(child: Text(label!, style: title_tabs_text)),
-            Checkbox(
-              value: value,
-              onChanged: (bool? newValue) {
-                //onChanged(newValue);
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
+import 'package:super_planner/services/db.dart';
+import 'package:super_planner/screens/display.dart';
 class DisplayTask extends StatefulWidget {
-  final String? taskName;
-  const DisplayTask({Key? key,required this.taskName}) : super(key: key);
+  final dynamic task;
+  const DisplayTask({Key? key,required this.task}) : super(key: key);
 
   @override
   _DisplayTask createState() => _DisplayTask();
@@ -49,7 +12,9 @@ class DisplayTask extends StatefulWidget {
 
 /// This is the private State class that goes with MyStatefulWidget.
 class _DisplayTask extends State<DisplayTask> {
-  bool _isSelected = false;
+  final DBService db = DBService();
+  bool? _isSelected = false;
+  bool _loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -62,16 +27,53 @@ class _DisplayTask extends State<DisplayTask> {
           Radius.circular(20.0)
         )
       ),
-      child: LabeledCheckbox(
-        label: widget.taskName,
+      child: Padding (
         padding: const EdgeInsets.symmetric(horizontal:30.0, vertical: 10.0),
-        value: _isSelected,
-        // onChanged: (bool newValue) {
-        //   setState(() {
-        //     _isSelected = newValue;
-        //   });
-        // },
-      ),  
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                widget.task['title'],
+                style: title_tabs_text,
+              ),
+            ),
+            Transform.scale(
+              scale: 1.15,
+              child: 
+                _loading ? CircularProgressIndicator() :
+                widget.task['done']? Container() : 
+                Checkbox(
+                  value: _isSelected,
+                  activeColor: Color(0xff40a8c4),
+                  onChanged: (bool? newValue) async {
+                    setState(() {
+                      _loading = true;
+                      _isSelected = newValue;  
+                    });
+                    if (_isSelected == true){
+                      try {
+                        await db.markTaskDone(widget.task['id']);
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Display(tab: 2),
+                          ),
+                          (route) => false,
+                        );
+                      }
+                      catch(err) {
+
+                      }
+                    }
+
+                    setState(() { _loading = false; });
+                  }
+                )
+            )
+            
+          ],
+        )
+      )
     );
   }
 }

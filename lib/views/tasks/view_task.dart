@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:super_planner/components/small_button.dart';
 import 'package:super_planner/constants.dart';
-import 'package:super_planner/components/back_button.dart';
 import 'package:super_planner/services/db.dart';
-import 'package:super_planner/views/calendar/add_event.dart';
-import 'package:super_planner/views/home.dart';
 import 'package:super_planner/views/tasks/edit_task.dart';
 import 'package:intl/intl.dart';
 import 'package:super_planner/screens/display.dart';
@@ -19,9 +16,6 @@ class ViewTask extends StatefulWidget {
 
 
 class _ViewTask extends State<ViewTask> {
-  final TextEditingController _tasktitleController = TextEditingController();
-  final TextEditingController _categoryController = TextEditingController();
-  final TextEditingController _notesController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   //List<String> categories = [];
   
@@ -31,25 +25,9 @@ class _ViewTask extends State<ViewTask> {
   final DBService db = DBService();
 
   bool _loading = false;
-  var formatter = new DateFormat('dd-MM-yyyy');
+  var formatter = new DateFormat.yMMMMd('en_US');
 
   DateTime selectedDate = DateTime.now();
-  String _reminder = "1 day before";
-
-    _selectDate(BuildContext context) async {
-      final DateTime? picked = await showDatePicker(
-          context: context,
-          initialDate: selectedDate,
-          firstDate: DateTime(2019, 8),
-          lastDate: DateTime(2100));
-      if (picked != null && picked != selectedDate)
-        setState(() {
-          selectedDate = picked;
-          var date =
-              "${picked.toLocal().day}/${picked.toLocal().month}/${picked.toLocal().year}";
-          _dateController.text = date;
-        });
-    }
   
   Future<String?> createAlertDialog(BuildContext context){
  
@@ -79,21 +57,6 @@ class _ViewTask extends State<ViewTask> {
 
   @override
   Widget build(BuildContext context) {
-    var rawReminders = [
-      "1 hour before", 
-      "6 hours before", 
-      "1 day before", 
-      "2 days before"
-    ]; 
-
-    var reminder = rawReminders.map((element) {
-      return DropdownMenuItem(
-        child: Text(element, style: TextStyle(fontSize: 16)),
-        value: element,
-      );
-    }).toList();
-
-
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
@@ -101,22 +64,25 @@ class _ViewTask extends State<ViewTask> {
           key: addTaskFormKey,
           child: Column(
             children: <Widget>[
-              SizedBox(height: 100.0),
+              SizedBox(height: 50.0),
               Align(
-                alignment: FractionalOffset(0.075,0.6),
-                child: SmallButton(
-                  height: 20, 
-                  width: 20,
-                  image: 'assets/icons/back_icon.png',
-                  press: () async {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Display(), // or maybe pass the new editted task here
-                      ),
-                      (route) => false,
-                    );
-                  }
+                alignment: Alignment.topLeft,
+                child: Container(
+                  height: 70, 
+                  width: 90, 
+                  decoration: BoxDecoration(
+                    color: faded_light_blue, 
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(10.0), 
+                      bottomRight: Radius.circular(10.0)
+                    ),
+                  ),
+                  child: IconButton(
+                    icon: new Icon(Icons.arrow_back_ios, size: 20.0),
+                    onPressed: () async {
+                      Navigator.pop(context);
+                    }
+                  )
                 ),
               ),
               Padding (
@@ -141,7 +107,7 @@ class _ViewTask extends State<ViewTask> {
               
                     SizedBox(height: 20.0), 
                     Text(
-                      'Date',
+                      'DATE',
                       style: TextStyle(
                         color: dark_blue, 
                         fontSize: 16, 
@@ -233,7 +199,7 @@ class _ViewTask extends State<ViewTask> {
                               Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => Display(),
+                                  builder: (context) => Display(tab: 2),
                                 ),
                                 (route) => false,
                               );
@@ -258,6 +224,7 @@ class _ViewTask extends State<ViewTask> {
                     ), 
                     SizedBox(width: 20),
                     _loading ? CircularProgressIndicator() :
+                    widget.task['done']? Container() :
                     SmallButton(
                       height: 50, 
                       width: 50,
