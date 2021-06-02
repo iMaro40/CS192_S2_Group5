@@ -171,7 +171,7 @@ class _Calendar extends State<Calendar> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AddEvent()),
+            MaterialPageRoute(builder: (context) => AddEvent(defaultCategories: [],)),
           );
         },
         child: const Icon(Icons.add),

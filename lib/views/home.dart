@@ -42,9 +42,9 @@ class _HomeState extends State<Home> {
           DateTime startDateTime =
               DateTime.fromMicrosecondsSinceEpoch(event['startTime'].microsecondsSinceEpoch);
           if (isSameDay(startDateTime, DateTime.now())) {
-            if (event['categories'][0] == 'Class') {
+            if (event['categories'].contains('Class')) {
               classes.add(event);
-            } else if (event['categories'][0] == 'Meeting') {
+            } else if (event['categories'].contains('Meeting')) {
               meetings.add(event);
             } else {
               exams.add(event);
@@ -146,7 +146,7 @@ class _HomeState extends State<Home> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => AddEvent()));
+                                builder: (context) => AddEvent(defaultCategories: ['Class'],)));
                       },
                     )
                   ],
@@ -214,7 +214,7 @@ class _HomeState extends State<Home> {
                         press: () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AddEvent()),
+                                  builder: (context) => AddEvent(defaultCategories: ['Meeting'],)),
                             ))
                   ],
                 ),
@@ -232,7 +232,7 @@ class _HomeState extends State<Home> {
                         press: () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AddEvent()),
+                                  builder: (context) => AddEvent(defaultCategories: [],)),
                             ))
                   ],
                 ),
