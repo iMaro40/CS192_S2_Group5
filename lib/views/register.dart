@@ -178,7 +178,7 @@ class RegisterState extends State<Register> {
                             try {
                               setState(() { _loading = true; });
                               
-                              UserCredential result = await (_auth.register(emailController.text, passwordController.text) as Future<UserCredential>);
+                              UserCredential result = await (_auth.register(emailController.text, passwordController.text));
                               await result.user!.updateProfile( displayName: nameController.text );
 
                               Navigator.pushReplacement(

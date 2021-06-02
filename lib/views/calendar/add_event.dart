@@ -6,6 +6,8 @@ import 'package:super_planner/services/db.dart';
 import 'package:super_planner/screens/display.dart';
 
 class AddEvent extends StatefulWidget {
+  final List<String?> defaultCategories;
+  const AddEvent({Key? key, required this.defaultCategories}) : super(key: key);
 
   @override
   _AddEvent createState() => _AddEvent();
@@ -19,6 +21,7 @@ class _AddEvent extends State<AddEvent> {
   final TextEditingController _starttimeController = TextEditingController();
   final TextEditingController _endtimeController = TextEditingController();
   List<String?> categories = [];
+  
 
   final addEventFormKey = GlobalKey<FormState>();
 
@@ -103,6 +106,8 @@ class _AddEvent extends State<AddEvent> {
 
   @override
   Widget build(BuildContext context) {
+    categories = widget.defaultCategories;
+
     var rawReminders = [
       "1 hour before", 
       "6 hours before", 

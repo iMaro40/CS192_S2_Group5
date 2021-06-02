@@ -4,7 +4,12 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:super_planner/utils/calendar.dart';
 import 'package:super_planner/services/db.dart';
 import 'package:super_planner/constants.dart';
+import 'package:super_planner/views/calendar/view_event.dart';
 
+bool DateOnlyCompare (a,b) {
+  return a.year == b.year && a.month == b.month
+        && a.day == b.day;
+}
 class Calendar extends StatefulWidget {
   @override
   _Calendar createState() => _Calendar();
@@ -33,10 +38,11 @@ class _Calendar extends State<Calendar> {
     _selectedEvents.dispose();
     super.dispose();
   }
-
+  
   List<Event> _getEventsForDay(DateTime day) {
     // Implementation example
-    return kEvents[day] ?? [];
+    print(day);
+    return [];
   }
 
   List<Event> _getEventsForRange(DateTime start, DateTime end) {
@@ -46,20 +52,6 @@ class _Calendar extends State<Calendar> {
     return [
       for (final d in days) ..._getEventsForDay(d),
     ];
-  }
-
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    if (!isSameDay(_selectedDay, selectedDay)) {
-      setState(() {
-        _selectedDay = selectedDay;
-        _focusedDay = focusedDay;
-        _rangeStart = null; // Important to clean those
-        _rangeEnd = null;
-        _rangeSelectionMode = RangeSelectionMode.toggledOff;
-      });
-
-      _selectedEvents.value = _getEventsForDay(selectedDay);
-    }
   }
 
   void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
@@ -90,6 +82,35 @@ class _Calendar extends State<Calendar> {
       FutureBuilder(
           future: db.getEvents(),
           builder: (context, snapshot) {
+            dynamic events = snapshot.data;
+            
+            List<Event> _getMyEvents(DateTime day) {
+              // print(events);
+              List <Event> result = [];
+              if(events != null) {
+                for(dynamic event in events) {
+                  DateTime startTime = DateTime.parse(event['startTime'].toDate().toString());
+                  if(DateOnlyCompare(day, startTime) == true) {
+                    result.add(Event(event['title']));
+                  }
+                }
+              }
+              
+              return result;
+            }
+            void _onMyDaySelected(DateTime selectedDay, DateTime focusedDay) {
+              if (!isSameDay(_selectedDay, selectedDay)) {
+                setState(() {
+                  _selectedDay = selectedDay;
+                  _focusedDay = focusedDay;
+                  _rangeStart = null; // Important to clean those
+                  _rangeEnd = null;
+                  _rangeSelectionMode = RangeSelectionMode.toggledOff;
+                });
+
+                _selectedEvents.value = _getMyEvents(selectedDay);
+              }
+            }
             return Column(
               children: [
               SizedBox(height: MediaQuery.of(context).size.height * 0.05), 
@@ -102,7 +123,7 @@ class _Calendar extends State<Calendar> {
                 rangeEndDay: _rangeEnd,
                 calendarFormat: _calendarFormat,
                 rangeSelectionMode: _rangeSelectionMode,
-                eventLoader: _getEventsForDay,
+                eventLoader: _getMyEvents,
                 startingDayOfWeek: StartingDayOfWeek.monday,
                 calendarStyle: CalendarStyle(
                   // Use `CalendarStyle` to customize the UI
@@ -114,7 +135,7 @@ class _Calendar extends State<Calendar> {
                   selectedDecoration:
                   const BoxDecoration(color: const Color(0xff40A8C4), shape: BoxShape.circle)
                 ),
-                onDaySelected: _onDaySelected,
+                onDaySelected: _onMyDaySelected,
                 onRangeSelected: _onRangeSelected,
                 onFormatChanged: (format) {
                   if (_calendarFormat != format) {
@@ -153,9 +174,14 @@ class _Calendar extends State<Calendar> {
                             ]
                           ),
                           child: ListTile(
-                            onTap: () => print('${value[index]}'), //navigate to view event
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ViewEvent(event: events[index])));
+                            },
                             title: Text('${value[index]}'),
-                            subtitle: Text('1:00 PM - 2:30PM'),
+                            // subtitle: Text('1:00 PM - 2:30PM'),
                           ),
                         );
                       },
@@ -171,7 +197,7 @@ class _Calendar extends State<Calendar> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AddEvent()),
+            MaterialPageRoute(builder: (context) => AddEvent(defaultCategories: [],)),
           );
         },
         child: const Icon(Icons.add),

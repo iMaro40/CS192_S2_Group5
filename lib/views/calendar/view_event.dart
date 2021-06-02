@@ -4,6 +4,7 @@ import 'package:super_planner/constants.dart';
 import 'package:super_planner/components/back_button.dart';
 import 'package:super_planner/services/db.dart';
 import 'package:super_planner/views/home.dart';
+import 'package:super_planner/screens/display.dart';
 import 'package:intl/intl.dart';
 
 class ViewEvent extends StatefulWidget {
@@ -52,6 +53,32 @@ class _ViewEvent extends State<ViewEvent> {
               child: Text("Submit"),
               onPressed: () {
                 Navigator.of(context).pop(customController.text.toString());
+              },
+            )
+          ]
+        );
+      }
+    );
+  }
+
+  Future<String?> createAlertDialogForDelete(BuildContext context){
+ 
+    return showDialog(context: context, builder: (context) {
+        return AlertDialog(
+          title: Text("Delete Event?"),
+          actions: <Widget>[
+            MaterialButton(
+              elevation: 5.0,
+              child: Text("Yes"),
+              onPressed: () {
+                Navigator.of(context).pop('Yes');
+              },
+            ),
+            MaterialButton(
+              elevation: 5.0,
+              child: Text("No"),
+              onPressed: () {
+                Navigator.of(context).pop('No');
               },
             )
           ]
@@ -200,7 +227,37 @@ class _ViewEvent extends State<ViewEvent> {
                     SmallButton(
                       height: 50, 
                       width: 50,
-                      image: 'assets/icons/trash_icon.png'
+                      image: 'assets/icons/trash_icon.png',
+                      press: () {
+                        createAlertDialogForDelete(context).then((onValue) async {
+                          if (onValue == 'Yes'){
+                            try {
+                              await db.deleteEvent(widget.event['id']);
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Display(tab: 0),
+                                ),
+                                (route) => false,
+                              );
+                            }
+                            catch(err) {
+                              print(err.toString());
+                              final snackBar = SnackBar(
+                                content: Text(err.toString()),
+                                action: SnackBarAction(
+                                  label: 'CLOSE',
+                                  onPressed: () {
+                          
+                                  },
+                                ),
+                              );
+
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            }
+                          }
+                        });
+                      }
                     ), 
                     SizedBox(width: 20),
                     // _loading ? CircularProgressIndicator() :

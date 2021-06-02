@@ -85,13 +85,17 @@ class DBService {
     });
   }
 
+  Future deleteEvent(eventID) async {
+    return eventCollection.doc(eventID).delete();
+  }
+
   Future getQuote() async {
-    var quote = await quoteCollection.doc(user!.email).get();
+    var quote = await quoteCollection.doc(user!.uid).get();
     return quote;
   }
 
   Future editQuote(String newQuote) async {
-    return quoteCollection.doc(user!.email).set({
+    return quoteCollection.doc(user!.uid).set({
       'quote': newQuote,
     });
   }
