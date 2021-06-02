@@ -91,7 +91,7 @@ class _Calendar extends State<Calendar> {
                 for(dynamic event in events) {
                   DateTime startTime = DateTime.parse(event['startTime'].toDate().toString());
                   if(DateOnlyCompare(day, startTime) == true) {
-                    result.add(Event(event['title']));
+                    result.add(Event(event['id']));
                   }
                 }
               }
@@ -178,9 +178,9 @@ class _Calendar extends State<Calendar> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ViewEvent(event: events[index])));
+                                      builder: (context) => ViewEvent(event: events.firstWhere((event) => event['id'] == value[index].toString()))));
                             },
-                            title: Text('${value[index]}'),
+                            title: Text('${events.firstWhere((event) => event['id'] == value[index].toString())['title']}'),
                             // subtitle: Text('1:00 PM - 2:30PM'),
                           ),
                         );
